@@ -8,28 +8,17 @@ pipeline {
   }
   environment {
     REPO_NAME = "${env.JOB_NAME.split('/')[1]}"
-    PKG_NAME  = REPO_NAME
+    PKG_NAME = "${env.JOB_NAME.split('/')[1]}"
   }
   stages {
-    stage ('Checkout') {
-      agent { label 'master' }
-      steps {
-        checkoutSubmodule()
-        dir (PKG_NAME) {
-          preCommit()
-          stash name: 'checkout', includes: '*/**'
-        }
-      }
-    }
     stage ('Build') {
       agent {
         label 'rpi-cross-compile'
       }
       stages {
-        stage ( 'Clean and restore checkout' ) {
+        stage ( 'Clean' ) {
           steps {
             sh "sudo rm -rf *"
-            unstash 'checkout'
           }
         }
         stage ('Install QT license'){
