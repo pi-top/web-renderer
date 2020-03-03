@@ -38,7 +38,7 @@ pipeline {
         }
         stage ('Build cross compiled project build'){
           steps {
-            buildCrossCompiledProject(env.WORKSPACE, "pt-web-ui.pro", "pt-web-ui", "linux-rasp-pi3-g++", true, true)
+            buildCrossCompiledProject(env.WORKSPACE + "/build", "pt-web-ui.pro", "pt-web-ui", "linux-rasp-pi3-g++", true, true)
             sh 'cp ${WORKSPACE}/tests/build/test-pt-os-setup /mnt/tmp/'
           }
         }
