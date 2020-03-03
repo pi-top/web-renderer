@@ -8,10 +8,10 @@ QString APP_NAME = "pi-top Web UI Viewer";
 
 int main(int argc, char *argv[])
 {
-  QtWebEngine::initialize();
-
   QGuiApplication app(argc, argv);
   app.setApplicationName(APP_NAME);
+
+  QtWebEngine::initialize();
 
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("pt-web-ui.qml")));
