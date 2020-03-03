@@ -78,10 +78,7 @@ QUrl Utils::fromUserInput(const QString& userInput)
 
 int main(int argc, char *argv[])
 {
-//! [0]
     QGuiApplication app(argc, argv);
-    //QtWebView::initialize();
-//! [0]
     QGuiApplication::setApplicationDisplayName(QCoreApplication::translate("main",
                                                                            "QtWebView Example"));
     QCommandLineParser parser;
