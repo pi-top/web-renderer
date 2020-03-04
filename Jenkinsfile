@@ -55,7 +55,7 @@ pipeline {
                 apt-get update
                 apt-get install -y dirmngr
 
-                echo \"deb http://ftp.de.debian.org/debian buster main\" >> /etc/apt/sources.list
+                echo \"deb http://deb.debian.org/debian buster main\" >> /etc/apt/sources.list
                 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
                 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
                 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DCC9EFBF77E11517
@@ -77,7 +77,7 @@ pipeline {
                   qtwebengine5-dev
 
                 # Clean up Debian repo (just in case)
-                sed -i \"/ftp.de.debian.org/d\" /etc/apt/sources.list
+                sed -i \"/deb.debian.org/d\" /etc/apt/sources.list
                 apt-get update
 EOF
             '''
