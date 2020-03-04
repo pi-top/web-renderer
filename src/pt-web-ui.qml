@@ -1,6 +1,6 @@
 import QtQuick.Controls 1.0
 import QtQuick.Window 2.0
-import QtWebEngine 1.0
+import QtWebKit 3.0
 
 ApplicationWindow {
     visible: true
@@ -14,7 +14,7 @@ ApplicationWindow {
     property string url: ""
     // END
 
-    WebEngineView {
+    WebView {
         url: root.url
         anchors.fill: parent
         focus: true

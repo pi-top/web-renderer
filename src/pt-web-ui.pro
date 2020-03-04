@@ -1,5 +1,4 @@
 QT += quick
-QT += webengine
 
 CONFIG += c++
 CONFIG += disable-desktop
