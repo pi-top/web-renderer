@@ -13,8 +13,6 @@ pipeline {
   stages {
     stage ('Checkout') {
       agent { label 'master' }
-      steps {
-      }
     }
     stage ('Build') {
       agent {
