@@ -8,17 +8,28 @@ pipeline {
   }
   environment {
     REPO_NAME = "${env.JOB_NAME.split('/')[1]}"
-    PKG_NAME = "${env.JOB_NAME.split('/')[1]}"
+    PKG_NAME  = REPO_NAME.substring(0, REPO_NAME.length() - 4)
   }
   stages {
+    stage ('Checkout') {
+      agent { label 'master' }
+      steps {
+        checkoutSubmodule()
+        dir (PKG_NAME) {
+          //preCommit()
+          stash name: 'checkout', includes: '*/**'
+        }
+      }
+    }
     stage ('Build') {
       agent {
         label 'rpi-cross-compile'
       }
       stages {
-        stage ( 'Clean' ) {
+        stage ( 'Clean and restore checkout' ) {
           steps {
             sh "sudo rm -rf *"
+            unstash 'checkout'
           }
         }
         stage ('Install QT license'){
@@ -41,6 +52,20 @@ pipeline {
             buildCrossCompiledProject(env.WORKSPACE + "/src/build", "pt-web-ui.pro", "pt-web-ui", "linux-rasp-pi3-g++", true, true)
           }
         }
+        stage ('Test') {
+          steps {
+//            sh '''
+//              sudo chroot /mnt <<EOF
+//                /tmp/test-pt-os-setup
+//EOF
+//            '''
+
+            dir ('src/build') {
+              stash includes: "pt-web-ui", name: 'build-pt-web-ui', useDefaultExcludes: false
+            }
+          }
+        }
+
       }
     }
     stage ('Package') {
@@ -49,6 +74,9 @@ pipeline {
         stage ('Package') {
           steps {
             script {
+              dir(PKG_NAME) {
+                  unstash 'build-pt-web-ui'
+              }
               env.DEB_BUILD_OPTIONS="nostrip"
               buildGenericPkg(false, PKG_NAME)
               try {
