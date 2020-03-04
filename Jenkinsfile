@@ -49,6 +49,36 @@ pipeline {
         }
         stage ('Build cross compiled project build'){
           steps {
+            sh '''
+              sudo chroot /mnt <<EOF
+                # Temporarily add Debian repo
+                echo "deb http://ftp.de.debian.org/debian buster main" > /etc/apt/sources.list
+                apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
+                apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
+                apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DCC9EFBF77E11517
+                
+                apt update
+
+                # Run dependencies (probably not necessary)
+                apt install -y \
+                 libqt5quick5 \
+                 libqt5qml5 \
+                 qml-module-qtquick-window2 \
+                 qml-module-qtquick2 \
+                 qml-module-qtquick-controls \
+                 qml-module-qtwebengine \
+
+                # Build dependencies
+                apt install -y \
+                 qt5-default \
+                 qtwebengine5-dev
+
+                # Clean up Debian repo (just in case)
+                sed -i "s|deb http://ftp.de.debian.org/debian buster main|d" /etc/apt/sources.list
+                apt update
+EOF
+            '''
+
             buildCrossCompiledProject(env.WORKSPACE + "/src/build", "pt-web-ui.pro", "pt-web-ui", "linux-rasp-pi3-g++", true, true)
           }
         }

@@ -16,7 +16,7 @@ sudo apt install -y libqt5quick5 libqt5qml5 qml-module-qtquick-window2 qml-modul
 ### To Build
 
 ``` bash
-$ sudo apt install qt5-default libqt5webkit5-dev qtwebengine5-dev
+$ sudo apt install -y qt5-default qtwebengine5-dev
 ```
 
 
