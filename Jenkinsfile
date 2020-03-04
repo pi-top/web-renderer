@@ -22,24 +22,14 @@ pipeline {
       }
       stages {
         stage ( 'Clean and restore checkout' ) {
-          steps {
-          }
         }
         stage ('Install QT license') {
-          steps {
-          }
         }
         stage ('Mount cross compiler image') {
-          steps {
-          }
         }
         stage ('Download cross compiler') {
-          steps {
-          }
         }
         stage ('Build cross compiled project build') {
-          steps {
-          }
         }
         stage ('Test') {
           steps {
