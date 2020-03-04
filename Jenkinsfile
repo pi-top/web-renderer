@@ -52,6 +52,8 @@ pipeline {
             sh '''
               sudo chroot /mnt <<EOF
                 # Temporarily add Debian repo
+                apt install -y dirmngr
+
                 echo "deb http://ftp.de.debian.org/debian buster main" > /etc/apt/sources.list
                 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
                 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
