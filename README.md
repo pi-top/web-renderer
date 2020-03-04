@@ -3,18 +3,22 @@
 Qt/QML-based web browser
 (modified from: https://github.com/kernelconcepts/qt-mini-browser)
 
-## Run dependencies
+## Dependencies
 
+Follow instructions [here](https://packages.debian.org/buster/armhf/qtwebengine5-dev/download) for adding Debian as a source before installing deps, then remove after.
+
+### To Run
 ``` bash
-sudo apt install -y libqt5quick5 libqt5qml5 qml-module-qtquick-window2 qml-module-qtquick2 qml-module-qtquick-controls qml-module-qtwebkit
+sudo apt install -y libqt5quick5 libqt5qml5 qml-module-qtquick-window2 qml-module-qtquick2 qml-module-qtquick-controls qml-module-qtwebengine
 
 ```
 
-## Development dependencies
+## To Build
 
 ``` bash
 $ sudo apt install qt5-default libqt5webkit5-dev qtwebengine5-dev
 ```
+
 
 ## Compile
 
