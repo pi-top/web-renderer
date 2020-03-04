@@ -17,7 +17,7 @@ Depends: ${misc:Depends},
  qml-module-qtquick-window2,
  qml-module-qtquick2,
  qml-module-qtquick-controls,
- qml-module-qtwebengine
+ qml-module-qtwebkit
 Description: pi-top Web UI
  Minimal web browser intended for accessing local pi-top
  web applications
