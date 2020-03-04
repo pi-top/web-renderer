@@ -3,10 +3,17 @@
 Qt/QML-based web browser
 (modified from: https://github.com/kernelconcepts/qt-mini-browser)
 
-## Suggested dependencies
+## Run dependencies
 
 ``` bash
-$ sudo apt install qt5-default qt5-qmake qt5-qmake-bin qtdeclarative5-dev libqt5webkit5-dev qml-module-qtquick2 qml-module-qtwebkit qml-module-qtquick-*
+sudo apt install -y libqt5quick5 libqt5qml5 qml-module-qtquick-window2 qml-module-qtquick2 qml-module-qtquick-controls qml-module-qtwebkit
+
+```
+
+## Development dependencies
+
+``` bash
+$ sudo apt install qt5-default libqt5webkit5-dev qtwebengine5-dev
 ```
 
 ## Compile
