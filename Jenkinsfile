@@ -16,7 +16,7 @@ pipeline {
       steps {
         checkoutSubmodule()
         dir (PKG_NAME) {
-          //preCommit()
+          preCommit()
           stash name: 'checkout', includes: '*/**'
         }
       }
@@ -49,52 +49,60 @@ pipeline {
         }
         stage ('Build cross compiled project build'){
           steps {
-            sh '''
-              sudo chroot /mnt <<EOF
-                # Temporarily add Debian repo
-                apt-get update
-                apt-get install -y dirmngr
+            // Install QtWebEngine from Debian
+            // Not available from Raspbian due to 'armv7 contamination'
+            // i.e. not compatible with armv6 early RPis
 
-                echo \"deb http://deb.debian.org/debian buster main\" >> /etc/apt/sources.list
-                apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
-                apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
-                apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DCC9EFBF77E11517
-                
-                apt-get update
+            // Commented out: Currently using deprecated WebKit
+            // Static cross-compiled build of Qt does not provide QtWebEngine
 
-                # Run dependencies (probably not necessary)
-                apt-get install -y \
-                  libqt5quick5 \
-                  libqt5qml5 \
-                  qml-module-qtquick-window2 \
-                  qml-module-qtquick2 \
-                  qml-module-qtquick-controls \
-                  qml-module-qtwebengine
+//             sh '''
+//               sudo chroot /mnt <<EOF
+//                 # Temporarily add Debian repo
+//                 apt-get update
+//                 apt-get install -y dirmngr
 
-                # Build dependencies
-                apt-get install -y \
-                  qt5-default \
-                  qtwebengine5-dev
+//                 echo \"deb http://deb.debian.org/debian buster main\" >> /etc/apt/sources.list
+//                 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
+//                 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
+//                 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys DCC9EFBF77E11517
 
-                # Clean up Debian repo (just in case)
-                sed -i \"/deb.debian.org/d\" /etc/apt/sources.list
-                apt-get update
-EOF
-            '''
+//                 apt-get update
 
-            buildCrossCompiledProject(env.WORKSPACE + "/src/build", "pt-web-ui.pro", "pt-web-ui", "linux-rasp-pi3-g++", true, true)
+//                 # Run dependencies (probably not necessary)
+//                 apt-get install -y \
+//                   libqt5quick5 \
+//                   libqt5qml5 \
+//                   qml-module-qtquick-window2 \
+//                   qml-module-qtquick2 \
+//                   qml-module-qtquick-controls \
+//                   qml-module-qtwebengine
+
+//                 # Build dependencies
+//                 apt-get install -y \
+//                   qt5-default \
+//                   qtwebengine5-dev
+
+//                 # Clean up Debian repo (just in case)
+//                 sed -i \"/deb.debian.org/d\" /etc/apt/sources.list
+//                 apt-get update
+// EOF
+//             '''
+
+            // buildCrossCompiledProject(env.WORKSPACE + "/tests/build", "test-" + PKG_NAME + ".pro", "test-" + PKG_NAME, "linux-rasp-pi3-g++", true, true)
+            buildCrossCompiledProject(env.WORKSPACE + "/src/build", PKG_NAME + ".pro", PKG_NAME, "linux-rasp-pi3-g++", true, true)
           }
         }
         stage ('Test') {
           steps {
 //            sh '''
 //              sudo chroot /mnt <<EOF
-//                /tmp/test-pt-os-setup
-//EOF
+//                /tmp/test-''' + PKG_NAME + '''
+// EOF
 //            '''
 
             dir ('src/build') {
-              stash includes: "pt-web-ui", name: 'build-pt-web-ui', useDefaultExcludes: false
+              stash includes: PKG_NAME, name: 'build-' + PKG_NAME, useDefaultExcludes: false
             }
           }
         }
@@ -108,7 +116,7 @@ EOF
           steps {
             script {
               dir(PKG_NAME) {
-                  unstash 'build-pt-web-ui'
+                  unstash 'build-' + PKG_NAME
               }
               env.DEB_BUILD_OPTIONS="nostrip"
               buildGenericPkg(false, PKG_NAME)
