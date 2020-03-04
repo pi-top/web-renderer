@@ -52,6 +52,7 @@ pipeline {
             sh '''
               sudo chroot /mnt <<EOF
                 # Temporarily add Debian repo
+                apt update
                 apt install -y dirmngr
 
                 echo \"deb http://ftp.de.debian.org/debian buster main\" > /etc/apt/sources.list
