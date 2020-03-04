@@ -15,9 +15,7 @@ pipeline {
     stage ('Checkout') {
       agent { label 'master' }
       steps {
-        dir (PKG_NAME) {
-          preCommit()
-        }
+        checkoutSubmodule()
       }
     }
     stage ('Build') {
