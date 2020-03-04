@@ -64,20 +64,20 @@ pipeline {
 
                 # Run dependencies (probably not necessary)
                 apt-get install -y \
-                 libqt5quick5 \
-                 libqt5qml5 \
-                 qml-module-qtquick-window2 \
-                 qml-module-qtquick2 \
-                 qml-module-qtquick-controls \
-                 qml-module-qtwebengine \
+                  libqt5quick5 \
+                  libqt5qml5 \
+                  qml-module-qtquick-window2 \
+                  qml-module-qtquick2 \
+                  qml-module-qtquick-controls \
+                  qml-module-qtwebengine
 
                 # Build dependencies
                 apt-get install -y \
-                 qt5-default \
-                 qtwebengine5-dev
+                  qt5-default \
+                  qtwebengine5-dev
 
                 # Clean up Debian repo (just in case)
-                sed -i \"s|deb http://ftp.de.debian.org/debian buster main|d\" /etc/apt/sources.list
+                sed -i \"/ftp.de.debian.org/d\" /etc/apt/sources.list
                 apt-get update
 EOF
             '''
