@@ -1,3 +1,4 @@
+
 pipeline {
   agent any
   options {
@@ -13,22 +14,17 @@ pipeline {
   stages {
     stage ('Checkout') {
       agent { label 'master' }
+      steps {
+        dir (PKG_NAME) {
+          preCommit()
+        }
+      }
     }
     stage ('Build') {
       agent {
         label 'rpi-cross-compile'
       }
       stages {
-        stage ( 'Clean and restore checkout' ) {
-        }
-        stage ('Install QT license') {
-        }
-        stage ('Mount cross compiler image') {
-        }
-        stage ('Download cross compiler') {
-        }
-        stage ('Build cross compiled project build') {
-        }
         stage ('Test') {
           steps {
             dir ('src/build') {
@@ -36,6 +32,7 @@ pipeline {
             }
           }
         }
+
       }
     }
     stage ('Package') {
