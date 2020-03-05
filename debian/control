@@ -10,10 +10,6 @@ Package: pt-web-ui
 Architecture: armhf
 Depends: ${misc:Depends},
  ${shlibs:Depends},
-# Library linking
- libqt5quick5,
- libqt5qml5,
-# Runtime QML components
  qml-module-qtquick-window2,
  qml-module-qtquick2,
  qml-module-qtquick-controls,
