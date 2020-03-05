@@ -2,6 +2,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QScreen>
+#include <QtWebEngine>
+
 
 QString APP_NAME = "pi-top Web UI Viewer";
 
@@ -10,6 +12,7 @@ int main(int argc, char *argv[])
   QGuiApplication app(argc, argv);
   app.setApplicationName(APP_NAME);
 
+  QtWebEngine::initialize();
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("/usr/lib/pt-web-ui/pt-web-ui.qml")));
   if (engine.rootObjects().isEmpty())
