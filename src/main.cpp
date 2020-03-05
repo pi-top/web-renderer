@@ -4,17 +4,32 @@
 #include <QScreen>
 #include <QtWebEngine>
 
-
 QString APP_NAME = "pi-top Web UI Viewer";
+
+bool isPi()
+{
+#ifdef __arm__
+  return true;
+#else
+  return false;
+#endif
+}
 
 int main(int argc, char *argv[])
 {
-  QGuiApplication app(argc, argv);
-  app.setApplicationName(APP_NAME);
-
   QtWebEngine::initialize();
+  QGuiApplication app(argc, argv);
+
   QQmlApplicationEngine engine;
-  engine.load(QUrl(QStringLiteral("/usr/lib/pt-web-ui/pt-web-ui.qml")));
+  if (isPi())
+  {
+    engine.load(QUrl(QStringLiteral("/usr/lib/pt-web-ui/pt-web-ui.qml")));
+  }
+  else
+  {
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+  }
+
   if (engine.rootObjects().isEmpty())
   {
     return -1;
@@ -65,7 +80,13 @@ int main(int argc, char *argv[])
   // PROCESS COMMAND LINE ARGS //
   ///////////////////////////////
 
-  rootObject->setProperty("title", parser.value(titleOption));
+  QString title = APP_NAME;
+  QString providedTitle = parser.value(titleOption);
+  if (providedTitle != "")
+  {
+    title = providedTitle;
+  }
+  app.setApplicationName(title);
 
   rootObject->setProperty("url", parser.value(urlOption));
 
@@ -122,6 +143,8 @@ int main(int argc, char *argv[])
   {
     qFatal("Invalid height specified");
   }
+
+  rootObject->setProperty("initialised", true);
 
   ///////////
   // START //
