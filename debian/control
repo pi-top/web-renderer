@@ -1,0 +1,23 @@
+Source: pt-web-ui
+Section: utils
+Priority: optional
+Maintainer: pi-top <deb-maintainers@pi-top.com>
+Build-Depends: debhelper (>= 7), qt5-default, qtwebengine5-dev
+Standards-Version: 3.8.4
+Homepage: https://pi-top.com/
+
+Package: pt-web-ui
+Architecture: armhf
+Depends: ${misc:Depends},
+ ${shlibs:Depends},
+# Library linking
+ libqt5quick5,
+ libqt5qml5,
+# Runtime QML components
+ qml-module-qtquick-window2,
+ qml-module-qtquick2,
+ qml-module-qtquick-controls,
+ qml-module-qtwebengine
+Description: pi-top Web UI
+ Minimal web browser intended for accessing local pi-top
+ web applications

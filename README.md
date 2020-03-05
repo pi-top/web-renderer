@@ -10,13 +10,12 @@ Follow instructions [here](https://packages.debian.org/buster/armhf/qtwebengine5
 ### To Run
 ``` bash
 sudo apt install -y libqt5quick5 libqt5qml5 qml-module-qtquick-window2 qml-module-qtquick2 qml-module-qtquick-controls qml-module-qtwebengine
-
 ```
 
 ### To Build
 
 ``` bash
-$ sudo apt install qt5-default libqt5webkit5-dev qtwebengine5-dev
+$ sudo apt install -y qt5-default qtwebengine5-dev
 ```
 
 
