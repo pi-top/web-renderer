@@ -4,17 +4,32 @@
 #include <QScreen>
 #include <QtWebEngine>
 
-
 QString APP_NAME = "pi-top Web UI Viewer";
+
+bool isPi()
+{
+#ifdef __arm__
+  return true;
+#else
+  return false;
+#endif
+}
 
 int main(int argc, char *argv[])
 {
   QGuiApplication app(argc, argv);
-  app.setApplicationName(APP_NAME);
-
   QtWebEngine::initialize();
+
   QQmlApplicationEngine engine;
-  engine.load(QUrl(QStringLiteral("/usr/lib/pt-web-ui/pt-web-ui.qml")));
+  if (isPi())
+  {
+    engine.load(QUrl(QStringLiteral("/usr/lib/pt-web-ui/pt-web-ui.qml")));
+  }
+  else
+  {
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+  }
+
   if (engine.rootObjects().isEmpty())
   {
     return -1;
@@ -65,7 +80,16 @@ int main(int argc, char *argv[])
   // PROCESS COMMAND LINE ARGS //
   ///////////////////////////////
 
-  rootObject->setProperty("title", parser.value(titleOption));
+  QString title = APP_NAME;
+  const QString &providedTitle = parser.value(titleOption);
+  if (providedTitle != "")
+  {
+    title = providedTitle;
+  }
+  app.setApplicationName(title);
+  rootObject->setProperty("title", title);
+
+  // app.setWindowIcon(QIcon("/path/to/" + title + ".png"));
 
   rootObject->setProperty("url", parser.value(urlOption));
 
@@ -78,9 +102,9 @@ int main(int argc, char *argv[])
     rootObject->setProperty("visibility", "Windowed");
   }
 
-  QSize screenSize = app.primaryScreen()->size();
+  const QSize &screenSize = app.primaryScreen()->size();
 
-  QString widthScaleStr = parser.value(widthOption);
+  const QString &widthScaleStr = parser.value(widthOption);
   float widthScalingFactor;
   bool validWidth = true;
   if (widthScaleStr == "")
@@ -101,7 +125,7 @@ int main(int argc, char *argv[])
     qFatal("Invalid width specified");
   }
 
-  QString heightScaleStr = parser.value(heightOption);
+  const QString &heightScaleStr = parser.value(heightOption);
   float heightScalingFactor;
   bool validHeight = true;
   if (heightScaleStr == "")
@@ -122,6 +146,8 @@ int main(int argc, char *argv[])
   {
     qFatal("Invalid height specified");
   }
+
+  rootObject->setProperty("initialised", true);
 
   ///////////
   // START //
