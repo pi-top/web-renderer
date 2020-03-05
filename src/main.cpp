@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
   ///////////////////////////////
 
   QString title = APP_NAME;
-  QString providedTitle = parser.value(titleOption);
+  const QString &providedTitle = parser.value(titleOption);
   if (providedTitle != "")
   {
     title = providedTitle;
@@ -99,9 +99,9 @@ int main(int argc, char *argv[])
     rootObject->setProperty("visibility", "Windowed");
   }
 
-  QSize screenSize = app.primaryScreen()->size();
+  const QSize &screenSize = app.primaryScreen()->size();
 
-  QString widthScaleStr = parser.value(widthOption);
+  const QString &widthScaleStr = parser.value(widthOption);
   float widthScalingFactor;
   bool validWidth = true;
   if (widthScaleStr == "")
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
     qFatal("Invalid width specified");
   }
 
-  QString heightScaleStr = parser.value(heightOption);
+  const QString &heightScaleStr = parser.value(heightOption);
   float heightScalingFactor;
   bool validHeight = true;
   if (heightScaleStr == "")
