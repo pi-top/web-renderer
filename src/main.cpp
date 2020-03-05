@@ -17,8 +17,8 @@ bool isPi()
 
 int main(int argc, char *argv[])
 {
-  QtWebEngine::initialize();
   QGuiApplication app(argc, argv);
+  QtWebEngine::initialize();
 
   QQmlApplicationEngine engine;
   if (isPi())
@@ -87,6 +87,9 @@ int main(int argc, char *argv[])
     title = providedTitle;
   }
   app.setApplicationName(title);
+  rootObject->setProperty("title", title);
+
+  // app.setWindowIcon(QIcon("/path/to/" + title + ".png"));
 
   rootObject->setProperty("url", parser.value(urlOption));
 

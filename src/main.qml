@@ -8,6 +8,7 @@ ApplicationWindow {
 
   // Properties to be initialised
   visibility: "Windowed"
+  title: ""
   width: -1
   height: -1
   property string url: ""
