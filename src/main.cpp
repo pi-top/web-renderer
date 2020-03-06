@@ -17,6 +17,9 @@ bool isPi()
 
 int main(int argc, char *argv[])
 {
+  // Suppress "qt5ct: using qt5ct plugin" stdout output
+  qputenv("QT_LOGGING_RULES", "qt5ct.debug=false");
+
   QGuiApplication app(argc, argv);
   QtWebEngine::initialize();
 
