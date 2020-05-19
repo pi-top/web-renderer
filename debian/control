@@ -19,5 +19,7 @@ Depends: ${misc:Depends},
  qml-module-qtquick-controls,
  qml-module-qtwebengine
 Description: pi-top Web UI
- Minimal web browser intended for accessing local pi-top
- web applications
+ Minimal web browser intended for making web-served frontends appear
+ native. Not designed to be used standalone. Internally configured based
+ on the specific type of UI intended to be shown. Will ensure that
+ any backend servers are started, if necessary.
