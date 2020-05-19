@@ -1,2 +1,3 @@
 pt-web-ui                                   /usr/bin/
-src/main.qml                                /usr/lib/pt-web-ui/pt-web-ui.qml
+src/pt-web-ui.json                          /usr/lib/pt-web-ui/
+src/pt-web-ui.qml                           /usr/lib/pt-web-ui/

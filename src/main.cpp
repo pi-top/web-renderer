@@ -1,10 +1,14 @@
-#include <QCommandLineParser>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QScreen>
+#include <QThread>
 #include <QtWebEngine>
 
-QString APP_NAME = "pi-top Web UI Viewer";
+#include "unix_signal_manager.h"
+#include "console_log_handler.h"
+#include "ptlogger.h"
+#include "config.h"
+#include "fileio.h"
 
 bool isPi()
 {
@@ -15,14 +19,130 @@ bool isPi()
 #endif
 }
 
+int runCommand(const QString &command, const QStringList &args, int timeout,
+               QString &response)
+{
+  qDebug().noquote() << "Executing:" << command;
+
+  if (args.length() > 0)
+  {
+    qDebug().noquote() << "with" << args;
+  }
+
+  int exitCode = -1;
+
+  QProcess process;
+  QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+
+  env.insert(QStringLiteral("DISPLAY"), QStringLiteral(":0"));
+  process.setProcessEnvironment(env);
+
+  if (args.length() > 0)
+  {
+    process.start(command, args);
+  }
+  else
+  {
+    process.start(command);
+  }
+
+  if (process.waitForStarted(timeout) == false)
+  {
+    qDebug().noquote().nospace()
+        << QStringLiteral("\"") << command << QStringLiteral(" ")
+        << args.join(QStringLiteral(" ")) << QStringLiteral("\" err");
+  }
+
+  if (process.waitForFinished(timeout) == false)
+  {
+    qDebug().noquote().nospace()
+        << QStringLiteral("\"") << command << QStringLiteral(" ")
+        << args.join(QStringLiteral(" ")) << "\" timed out";
+  }
+
+  response = process.readAll();
+  exitCode = process.exitCode();
+
+  QString stderr = process.readAllStandardError();
+  QString stdout = process.readAllStandardOutput();
+
+  if (stderr.isEmpty() == false)
+  {
+    qDebug().noquote() << "stderr:\n" << stderr;
+  }
+
+  if (stdout.isEmpty() == false)
+  {
+    qDebug().noquote() << "stdout:\n" << stdout;
+  }
+
+  process.close();
+
+  return exitCode;
+}
+
 int main(int argc, char *argv[])
 {
+#ifdef QT_DEBUG
+  int defaultLoggingMode = LoggingMode::Console | LoggingMode::Journal;
+  int defaultLogLevel = LOG_DEBUG;
+#else
+  int defaultLoggingMode = LoggingMode::Journal;
+  int defaultLogLevel = LOG_INFO;
+#endif
+
+  PTLogger::initialiseLogger(defaultLoggingMode, defaultLogLevel);
+
+  QString configFilePath;
+  if (isPi())
+  {
+    configFilePath = "/usr/lib/pt-web-ui/pt-web-ui.json";
+  }
+  else
+  {
+    configFilePath = "pt-web-ui.json";
+  }
+
+  qInfo().noquote() << "Config file path:" << configFilePath;
+  QFile cfgFile(configFilePath);
+  if (!cfgFile.exists())
+  {
+    qInfo().noquote() << "Couldnt find config file. Using default parameters";
+  }
+  FileIO* fileIO = new FileIO();
+  Config* config;
+  config = new Config(fileIO, configFilePath);
+
+  int logLevel = config->getInt("logOutputLevel", defaultLogLevel);
+  if (logLevel != defaultLogLevel)
+  {
+    qInfo().noquote() << "Logging level overridden to" << logLevel << "from config file";
+    PTLogger::setLevel(logLevel);
+  }
+
+  qInfo() << "Starting backend web server";
+  if (isPi())
+  {
+    QProcess *startServerService = new QProcess();
+    startServerService->start("sudo", QStringList() << "systemctl"
+                                                    << "start"
+                                                    << "pt-os-setup.service");
+  }
+
   // Suppress "qt5ct: using qt5ct plugin" stdout output
   qputenv("QT_LOGGING_RULES", "qt5ct.debug=false");
+
+  UnixSignalManager::catchUnixSignals(
+      {SIGHUP, SIGINT, SIGQUIT, SIGTERM, SIGTSTP});
+
+  qInfo() << "Waiting 2 seconds to avoid creating the window before the OS "
+             "dynamically sets its resolution";
+  QThread::sleep(2);
 
   QGuiApplication app(argc, argv);
   QtWebEngine::initialize();
 
+  qInfo() << "Loading QML";
   QQmlApplicationEngine engine;
   if (isPi())
   {
@@ -30,7 +150,7 @@ int main(int argc, char *argv[])
   }
   else
   {
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/pt-web-ui.qml")));
   }
 
   if (engine.rootObjects().isEmpty())
@@ -39,122 +159,89 @@ int main(int argc, char *argv[])
   }
   QObject *rootObject = engine.rootObjects().constFirst();
 
-  ////////////////////////////////
-  // SET UP COMMAND LINE PARSER //
-  ////////////////////////////////
+  QQuickWindow *window = qobject_cast<QQuickWindow *>(rootObject);
+  ConsoleLogHandler consoleLogHandler;
+  QObject::connect(window,
+                   SIGNAL(logMessage(int, QString, int, QString)),
+                   &consoleLogHandler,
+                   SLOT(handleLog(int, QString, int, QString)));
 
-  QCommandLineParser parser;
-  parser.setApplicationDescription(APP_NAME);
-  // parser.addHelpOption();
-  parser.addVersionOption();
+  ////////////////
+  // SETUP VIEW //
+  ////////////////
+  qInfo() << "Configuring view";
 
-  QCommandLineOption titleOption(QStringList() << "t"
-                                               << "title",
-                                 "Title of window", "title", "");
-  parser.addOption(titleOption);
-
-  QCommandLineOption urlOption(QStringList() << "u"
-                                             << "url",
-                               "URL to point to", "url", "");
-  parser.addOption(urlOption);
-
-  QCommandLineOption fullScreenOption(
-      QStringList() << "f"
-                    << "fullscreen",
-      "Start the app in fullscreen mode - ignores height and width");
-  parser.addOption(fullScreenOption);
-
-  QCommandLineOption widthOption(
-      QStringList() << "w"
-                    << "width",
-      "Window width (relative to screen, 0-1). Defaults to 1.0.", "width", "");
-  parser.addOption(widthOption);
-
-  QCommandLineOption heightOption(
-      QStringList() << "h"
-                    << "height",
-      "Window height (relative to screen, 0-1). Defaults to 1.0.", "height",
-      "");
-  parser.addOption(heightOption);
-
-  parser.process(app);
-
-  ///////////////////////////////
-  // PROCESS COMMAND LINE ARGS //
-  ///////////////////////////////
-
-  QString title = APP_NAME;
-  const QString &providedTitle = parser.value(titleOption);
-  if (providedTitle != "")
-  {
-    title = providedTitle;
-  }
+  QString title = QStringLiteral("pi-topOS First Time Setup");
   app.setApplicationName(title);
   rootObject->setProperty("title", title);
 
-  // app.setWindowIcon(QIcon("/path/to/" + title + ".png"));
+  QString url = "http://localhost:8020";
+  rootObject->setProperty("url", url);
 
-  rootObject->setProperty("url", parser.value(urlOption));
-
-  if (parser.isSet(fullScreenOption))
-  {
-    rootObject->setProperty("visibility", "FullScreen");
-  }
-  else
-  {
-    rootObject->setProperty("visibility", "Windowed");
-  }
+  rootObject->setProperty("visibility", "FullScreen");
 
   const QSize &screenSize = app.primaryScreen()->size();
 
-  const QString &widthScaleStr = parser.value(widthOption);
-  float widthScalingFactor;
-  bool validWidth = true;
-  if (widthScaleStr == "")
-  {
-    widthScalingFactor = 1.0;
-  }
-  else
-  {
-    widthScalingFactor = widthScaleStr.toFloat(&validWidth);
-  }
-
-  if (validWidth)
-  {
-    rootObject->setProperty("width", widthScalingFactor * screenSize.width());
-  }
-  else
-  {
-    qFatal("Invalid width specified");
-  }
-
-  const QString &heightScaleStr = parser.value(heightOption);
-  float heightScalingFactor;
-  bool validHeight = true;
-  if (heightScaleStr == "")
-  {
-    heightScalingFactor = 1.0;
-  }
-  else
-  {
-    heightScalingFactor = heightScaleStr.toFloat(&validHeight);
-  }
-
-  if (validHeight)
-  {
-    rootObject->setProperty("height",
-                            heightScalingFactor * screenSize.height());
-  }
-  else
-  {
-    qFatal("Invalid height specified");
-  }
+  rootObject->setProperty("width", screenSize.width());
+  rootObject->setProperty("height", screenSize.height());
 
   rootObject->setProperty("initialised", true);
 
-  ///////////
-  // START //
-  ///////////
+  qInfo() << "Waiting for backend web server response...";
+  bool serverIsUp = false;
+  int counter = 0;
+  int counterMax = 30;
+  while (serverIsUp == false)
+  {
+    if (counter >= counterMax)
+    {
+      qFatal("Unable to contact web server!");
+      exit(1);
+    }
 
-  return app.exec();
+    QString resp;
+    int exitCode = runCommand("curl",
+                              QStringList() << "--max-time"
+                                            << "0.5"
+                                            << "--silent"
+                                            << "--fail"
+                                            << "--output"
+                                            << "/dev/null" << url,
+                              1000, resp);
+
+    qDebug() << exitCode;
+
+    if (exitCode == 0)
+    {
+      qInfo() << "Backend web server responded!";
+      break;
+    }
+    else
+    {
+      qInfo()
+          << "Backend web server did not respond - sleeping for 1 second...";
+      QThread::sleep(1);
+    }
+  }
+
+  ///////////////
+  // MAIN LOOP //
+  ///////////////
+  qInfo() << "Starting main loop";
+  int exitCode = app.exec();
+
+  //////////////
+  // CLEAN UP //
+  //////////////
+  // STOP SERVER
+  if (isPi())
+  {
+    qInfo() << "Stopping backend web server";
+    QProcess *stopServerService = new QProcess();
+    stopServerService->start("sudo", QStringList() << "systemctl"
+                                                   << "stop"
+                                                   << "pt-os-setup.service");
+  }
+
+  return exitCode;
 }
