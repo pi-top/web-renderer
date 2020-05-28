@@ -1,3 +1,9 @@
+pt-web-ui (2.0.0-1) buster; urgency=medium
+
+  * Update app with pt-os-setup configuration
+
+ -- Jorge Capona <jorge@pi-top.com>  Thu, 28 May 2020 15:43:35 -0400
+
 pt-web-ui (1.0.0-1) buster; urgency=medium
 
   * Initial version
