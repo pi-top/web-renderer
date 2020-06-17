@@ -4,11 +4,11 @@
 #include <QThread>
 #include <QtWebEngine>
 
-#include "unix_signal_manager.h"
-#include "console_log_handler.h"
-#include "ptlogger.h"
 #include "config.h"
+#include "console_log_handler.h"
 #include "fileio.h"
+#include "ptlogger.h"
+#include "unix_signal_manager.h"
 
 bool isPi()
 {
@@ -83,15 +83,27 @@ int runCommand(const QString &command, const QStringList &args, int timeout,
 
 int main(int argc, char *argv[])
 {
-#ifdef QT_DEBUG
   int defaultLoggingMode = LoggingMode::Console | LoggingMode::Journal;
+#ifdef QT_DEBUG
   int defaultLogLevel = LOG_DEBUG;
 #else
-  int defaultLoggingMode = LoggingMode::Journal;
   int defaultLogLevel = LOG_INFO;
 #endif
 
   PTLogger::initialiseLogger(defaultLoggingMode, defaultLogLevel);
+
+  QGuiApplication app(argc, argv);
+  QtWebEngine::initialize();
+  QStringList args = app.arguments();
+  qDebug() << args;
+
+  if (args.length() < 2)
+  {
+    qCritical() << "No argument provided - exiting...";
+    exit(1);
+  }
+
+  QString backendServerToRun = args.at(1).split(".service").at(0);
 
   QString configFilePath;
   if (isPi())
@@ -109,24 +121,58 @@ int main(int argc, char *argv[])
   {
     qInfo().noquote() << "Couldnt find config file. Using default parameters";
   }
-  FileIO* fileIO = new FileIO();
-  Config* config;
+  FileIO *fileIO = new FileIO();
+  Config *config;
   config = new Config(fileIO, configFilePath);
 
   int logLevel = config->getInt("logOutputLevel", defaultLogLevel);
   if (logLevel != defaultLogLevel)
   {
-    qInfo().noquote() << "Logging level overridden to" << logLevel << "from config file";
+    qInfo().noquote() << "Logging level overridden to" << logLevel
+                      << "from config file";
     PTLogger::setLevel(logLevel);
+  }
+
+  qDebug() << "Checking if backend web server exists as a systemd service";
+  if (isPi())
+  {
+    QString resp;
+    runCommand("systemctl",
+               QStringList() << "list-units"
+                             << "--all"
+                             << "-t"
+                             << "service"
+                             << "--full"
+                             << "--no-legend",
+               1000, resp);
+
+    QStringList lines = resp.split("\n");
+    bool found = false;
+    foreach (QString line, lines)
+    {
+      qInfo() << line;
+      if (line.split(".service").at(0) == backendServerToRun)
+      {
+        found = true;
+        break;
+      }
+    }
+    if (!found)
+    {
+      qCritical()
+          << "No systemd service found matching argument provided - exiting...";
+      exit(1);
+    }
+    qDebug() << resp;
   }
 
   qInfo() << "Starting backend web server";
   if (isPi())
   {
     QProcess *startServerService = new QProcess();
-    startServerService->start("sudo", QStringList() << "systemctl"
-                                                    << "start"
-                                                    << "pt-os-setup.service");
+    startServerService->start("sudo", QStringList()
+                                          << "systemctl"
+                                          << "start" << backendServerToRun);
   }
 
   // Suppress "qt5ct: using qt5ct plugin" stdout output
@@ -138,9 +184,6 @@ int main(int argc, char *argv[])
   qInfo() << "Waiting 2 seconds to avoid creating the window before the OS "
              "dynamically sets its resolution";
   QThread::sleep(2);
-
-  QGuiApplication app(argc, argv);
-  QtWebEngine::initialize();
 
   qInfo() << "Loading QML";
   QQmlApplicationEngine engine;
@@ -161,8 +204,7 @@ int main(int argc, char *argv[])
 
   QQuickWindow *window = qobject_cast<QQuickWindow *>(rootObject);
   ConsoleLogHandler consoleLogHandler;
-  QObject::connect(window,
-                   SIGNAL(logMessage(int, QString, int, QString)),
+  QObject::connect(window, SIGNAL(logMessage(int, QString, int, QString)),
                    &consoleLogHandler,
                    SLOT(handleLog(int, QString, int, QString)));
 
@@ -238,9 +280,9 @@ int main(int argc, char *argv[])
   {
     qInfo() << "Stopping backend web server";
     QProcess *stopServerService = new QProcess();
-    stopServerService->start("sudo", QStringList() << "systemctl"
-                                                   << "stop"
-                                                   << "pt-os-setup.service");
+    stopServerService->start("sudo", QStringList()
+                                         << "systemctl"
+                                         << "stop" << backendServerToRun);
   }
 
   return exitCode;
