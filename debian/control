@@ -2,7 +2,12 @@ Source: pt-web-ui
 Section: utils
 Priority: optional
 Maintainer: pi-top <deb-maintainers@pi-top.com>
-Build-Depends: debhelper (>= 7), qt5-default, qtwebengine5-dev
+Build-Depends: debhelper (>= 7),
+ qtbase5-dev,
+ qtchooser (>= 55-gc9562a1-1~),
+ qt5-qmake,
+ qtbase5-dev-tools,
+ qtwebengine5-dev
 Standards-Version: 3.9.8
 Homepage: https://pi-top.com/
 
