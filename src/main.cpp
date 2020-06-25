@@ -138,12 +138,11 @@ int main(int argc, char *argv[])
   {
     QString resp;
     runCommand("systemctl",
-               QStringList() << "list-units"
-                             << "--all"
-                             << "-t"
-                             << "service"
+               QStringList() << "list-unit-files"
+                             << "-t" << "service"
                              << "--full"
-                             << "--no-legend",
+                             << "--no-legend"
+                             << "--no-pager",
                1000, resp);
 
     QStringList lines = resp.split("\n");
