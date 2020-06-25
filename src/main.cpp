@@ -143,13 +143,13 @@ int main(int argc, char *argv[])
                              << "--full"
                              << "--no-legend"
                              << "--no-pager",
-               1000, resp);
+               5000, resp);  // 5s to be safe - closer to 1.5s/2s
 
     QStringList lines = resp.split("\n");
     bool found = false;
     foreach (QString line, lines)
     {
-      qInfo() << line;
+      qDebug() << line;
       if (line.split(".service").at(0) == backendServerToRun)
       {
         found = true;
