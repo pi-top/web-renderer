@@ -1,3 +1,9 @@
+pt-web-ui (2.2.0-1) buster; urgency=medium
+
+  * Find backend service even if it is not enabled
+
+ -- Mike Roberts <mike@pi-top.com>  Thu, 25 Jun 2020 11:09:15 +0100
+
 pt-web-ui (2.1.0-1) buster; urgency=medium
 
   * Update dependency to Qt Quick Controls 2
