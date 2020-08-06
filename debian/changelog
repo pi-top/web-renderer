@@ -1,3 +1,10 @@
+pt-web-ui (2.2.1-1) buster; urgency=medium
+
+  * Attempt to start systemd service straight away
+  * Remove wait for screen resolution setting on start
+
+ -- Jorge Capona <jorge@pi-top.com>  Thu, 06 Aug 2020 15:52:27 -0400
+
 pt-web-ui (2.2.0-1) buster; urgency=medium
 
   * Find backend service even if it is not enabled
