@@ -156,10 +156,6 @@ int main(int argc, char *argv[])
   UnixSignalManager::catchUnixSignals(
       {SIGHUP, SIGINT, SIGQUIT, SIGTERM, SIGTSTP});
 
-  qInfo() << "Waiting 2 seconds to avoid creating the window before the OS "
-             "dynamically sets its resolution";
-  QThread::sleep(2);
-
   qInfo() << "Loading QML";
   QQmlApplicationEngine engine;
   if (isPi())
