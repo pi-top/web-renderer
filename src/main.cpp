@@ -133,45 +133,21 @@ int main(int argc, char *argv[])
     PTLogger::setLevel(logLevel);
   }
 
-  qDebug() << "Checking if backend web server exists as a systemd service";
+  qInfo() << "Attempting to start backend web server";
   if (isPi())
   {
     QString resp;
-    runCommand("systemctl",
-               QStringList() << "list-unit-files"
-                             << "-t" << "service"
-                             << "--full"
-                             << "--no-legend"
-                             << "--no-pager",
-               5000, resp);  // 5s to be safe - closer to 1.5s/2s
-
-    QStringList lines = resp.split("\n");
-    bool found = false;
-    foreach (QString line, lines)
-    {
-      qDebug() << line;
-      if (line.split(".service").at(0) == backendServerToRun)
-      {
-        found = true;
-        break;
-      }
-    }
-    if (!found)
+    int exitCode = runCommand("sudo",
+               QStringList() << "systemctl"
+                             << "start"
+                             << backendServerToRun,
+               5000, resp);  // 5s to be safe - closer to 0.1s
+    if (exitCode != 0)
     {
       qCritical()
-          << "No systemd service found matching argument provided - exiting...";
+          << "Unable to start systemd service provided - exiting...";
       exit(1);
     }
-    qDebug() << resp;
-  }
-
-  qInfo() << "Starting backend web server";
-  if (isPi())
-  {
-    QProcess *startServerService = new QProcess();
-    startServerService->start("sudo", QStringList()
-                                          << "systemctl"
-                                          << "start" << backendServerToRun);
   }
 
   // Suppress "qt5ct: using qt5ct plugin" stdout output
@@ -179,10 +155,6 @@ int main(int argc, char *argv[])
 
   UnixSignalManager::catchUnixSignals(
       {SIGHUP, SIGINT, SIGQUIT, SIGTERM, SIGTSTP});
-
-  qInfo() << "Waiting 2 seconds to avoid creating the window before the OS "
-             "dynamically sets its resolution";
-  QThread::sleep(2);
 
   qInfo() << "Loading QML";
   QQmlApplicationEngine engine;
