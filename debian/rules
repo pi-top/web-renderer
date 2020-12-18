@@ -5,4 +5,7 @@
 
 
 override_dh_shlibdeps:
-	echo "overriding $@"
+		echo "overriding $@"
+
+override_dh_dwz:
+		dwz -q -- debian/pt-web-ui/usr/bin/pt-web-ui || echo "Skipping dh_dwz"
