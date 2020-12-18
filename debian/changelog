@@ -1,3 +1,9 @@
+pt-web-ui (3.0.1) buster; urgency=medium
+
+  * Add additional debug printing when getting wifi interface information
+
+ -- Mike Roberts <mike@pi-top.com>  Fri, 18 Dec 2020 14:28:27 +0000
+
 pt-web-ui (3.0.0) buster; urgency=medium
 
   * Migrate to native package
