@@ -1,6 +1,12 @@
+pt-web-ui (3.0.2) buster; urgency=medium
+
+  * Fix changelog - previous release was invalid
+
+ -- Mike Roberts <mike@pi-top.com>  Fri, 18 Dec 2020 14:31:55 +0000
+
 pt-web-ui (3.0.1) buster; urgency=medium
 
-  * Add additional debug printing when getting wifi interface information
+  * <redacted>
 
  -- Mike Roberts <mike@pi-top.com>  Fri, 18 Dec 2020 14:28:27 +0000
 
