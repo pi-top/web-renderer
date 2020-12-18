@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
     QString resp;
     int exitCode = runCommand("curl",
                               QStringList() << "--max-time"
-                                            << "0.5"
+                                            << "1"
                                             << "--silent"
                                             << "--fail"
                                             << "--output"

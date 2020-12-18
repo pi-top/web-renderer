@@ -1,3 +1,10 @@
+pt-web-ui (3.0.0) buster; urgency=medium
+
+  * Migrate to native package
+  * Change curl max time from 0.5s to 1s
+
+ -- Mike Roberts <mike@pi-top.com>  Fri, 18 Dec 2020 14:20:17 +0000
+
 pt-web-ui (2.2.1-1) buster; urgency=medium
 
   * Attempt to start systemd service straight away
