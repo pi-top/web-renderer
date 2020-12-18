@@ -1,1 +1,2 @@
 pt-web-ui: binary-without-manpage
+pt-web-ui: hardening-no-pie usr/bin/pt-web-ui
