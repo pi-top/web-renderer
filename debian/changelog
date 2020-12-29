@@ -1,3 +1,9 @@
+pt-web-ui (3.1.0) buster; urgency=medium
+
+  * Remove X11BypassWindowManagerHint flag from application window
+
+ -- Jorge Capona <jorge@pi-top.com>  Tue, 29 Dec 2020 16:05:34 -0300
+
 pt-web-ui (3.0.2) buster; urgency=medium
 
   * Fix changelog - previous release was invalid

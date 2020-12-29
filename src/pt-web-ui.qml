@@ -5,8 +5,7 @@ import QtWebEngine 1.7
 ApplicationWindow {
   visible: true
   id: root
-  flags: Qt.WindowStaysOnTopHint | Qt.X11BypassWindowManagerHint | Qt.Window
-         | Qt.FramelessWindowHint
+  flags: Qt.WindowStaysOnTopHint | Qt.Window | Qt.FramelessWindowHint
 
   // Properties to be initialised
   visibility: "Windowed"
