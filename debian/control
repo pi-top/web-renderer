@@ -8,7 +8,7 @@ Build-Depends:
  qtchooser (>= 55-gc9562a1-1~),
  qt5-qmake,
  qtbase5-dev-tools,
- qtwebengine5-dev,
+#qtwebengine5-dev,
 Standards-Version: 4.5.0
 Homepage: https://pi-top.com/
 
