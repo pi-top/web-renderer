@@ -1,3 +1,14 @@
+pt-web-ui (3.1.1) buster; urgency=medium
+
+  [ Mike Roberts ]
+  * Allow external sources when testing shell scripts
+  * Architecture: any --> all
+
+  [ Jorge Capona ]
+  * Support pt-web-portal (#5)
+
+ -- pi-top <deb-maintainers@pi-top.com>  Fri, 09 Apr 2021 18:35:59 +0000
+
 pt-web-ui (3.1.0) buster; urgency=medium
 
   * Remove X11BypassWindowManagerHint flag from application window
