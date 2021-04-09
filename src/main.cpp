@@ -97,14 +97,6 @@ int main(int argc, char *argv[])
   QStringList args = app.arguments();
   qDebug() << args;
 
-  if (args.length() < 2)
-  {
-    qCritical() << "No argument provided - exiting...";
-    exit(1);
-  }
-
-  QString backendServerToRun = args.at(1).split(".service").at(0);
-
   QString configFilePath;
   if (isPi())
   {
@@ -131,23 +123,6 @@ int main(int argc, char *argv[])
     qInfo().noquote() << "Logging level overridden to" << logLevel
                       << "from config file";
     PTLogger::setLevel(logLevel);
-  }
-
-  qInfo() << "Attempting to start backend web server";
-  if (isPi())
-  {
-    QString resp;
-    int exitCode = runCommand("sudo",
-               QStringList() << "systemctl"
-                             << "start"
-                             << backendServerToRun,
-               5000, resp);  // 5s to be safe - closer to 0.1s
-    if (exitCode != 0)
-    {
-      qCritical()
-          << "Unable to start systemd service provided - exiting...";
-      exit(1);
-    }
   }
 
   // Suppress "qt5ct: using qt5ct plugin" stdout output
@@ -188,7 +163,7 @@ int main(int argc, char *argv[])
   app.setApplicationName(title);
   rootObject->setProperty("title", title);
 
-  QString url = "http://localhost:8020";
+  QString url = "http://localhost:80";
   rootObject->setProperty("url", url);
 
   rootObject->setProperty("visibility", "FullScreen");
@@ -242,19 +217,6 @@ int main(int argc, char *argv[])
   ///////////////
   qInfo() << "Starting main loop";
   int exitCode = app.exec();
-
-  //////////////
-  // CLEAN UP //
-  //////////////
-  // STOP SERVER
-  if (isPi())
-  {
-    qInfo() << "Stopping backend web server";
-    QProcess *stopServerService = new QProcess();
-    stopServerService->start("sudo", QStringList()
-                                         << "systemctl"
-                                         << "stop" << backendServerToRun);
-  }
 
   return exitCode;
 }
