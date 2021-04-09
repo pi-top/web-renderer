@@ -1,11 +1,7 @@
 pt-web-ui (3.1.1) buster; urgency=medium
 
-  [ Mike Roberts ]
-  * Allow external sources when testing shell scripts
-  * Architecture: any --> all
-
-  [ Jorge Capona ]
-  * Support pt-web-portal (#5)
+  * Display localhost server on port 80 on application start
+  * Remove logic to start/stop systemd services
 
  -- pi-top <deb-maintainers@pi-top.com>  Fri, 09 Apr 2021 18:35:59 +0000
 
