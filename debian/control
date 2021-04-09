@@ -8,7 +8,8 @@ Build-Depends:
  qtchooser (>= 55-gc9562a1-1~),
  qt5-qmake,
  qtbase5-dev-tools,
- qtwebengine5-dev,
+# FIXME: Build process fails when installing dependency (GH Issue #6)
+# qtwebengine5-dev,
 Standards-Version: 4.5.1
 Homepage: https://pi-top.com/
 
