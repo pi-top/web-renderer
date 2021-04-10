@@ -1,3 +1,3 @@
-# Binary has not been stripped properly
-pt-web-ui: binary-has-unneeded-section usr/bin/pt-web-ui .comment
 pt-web-ui: binary-without-manpage
+pt-web-ui: hardening-no-pie usr/bin/pt-web-ui
+pt-web-ui: arch-independent-package-contains-binary-or-object usr/bin/pt-web-ui
