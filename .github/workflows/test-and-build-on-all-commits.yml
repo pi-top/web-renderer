@@ -28,8 +28,32 @@ jobs:
   #         fail_ci_if_error: true
   #         verbose: true
 
-  build-debian-packages:
-    # needs: test-coverage
+  check-needs-compiling:
+    runs-on: ubuntu-20.04
+    outputs:
+      needs_compiling: ${{ steps.check_needs_compiling.outputs.needs_compiling }}
+      binary_name: ${{ steps.check_needs_compiling.outputs.binary_name }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.2.0
+        with:
+          fetch-depth: 0
+
+      - name: Set 'needs compiling' variable
+        id: check_needs_compiling
+        run: |
+          conditions_met="false"
+          binary_name=""
+          if ls src/ | grep -q -e '.pro$'; then
+            conditions_met="true"
+            binary_name=$(ls src/ | grep -e '.pro$'  | xargs -n 1 basename | cut -d '.' -f 1)
+          fi
+          echo "::set-output name=needs_compiling::${conditions_met}"
+          echo "::set-output name=binary_name::${binary_name}"
+
+  compile-qt-app:
+    needs: check-needs-compiling
+    if: needs.check-needs-compiling.outputs.needs_compiling == 'true'
     runs-on: ubuntu-20.04
     steps:
       - name: GitHub Environment Variables Action
@@ -39,6 +63,39 @@ jobs:
         uses: actions/checkout@v2.2.0
         with:
           fetch-depth: 0
+          submodules: 'recursive'
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Compile application
+        run: |
+          docker build -t qt-builder .
+          docker create -ti --name qt-builder-tmp qt-builder bash
+          docker cp qt-builder-tmp:/src/pt-about {{ needs.check-needs-compiling.outputs.binary_name }}.
+          docker rm -fv qt-builder-tmp
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: needs.check-needs-compiling.outputs.binary_name
+
+
+  build-debian-packages:
+    needs: compile-qt-app
+    runs-on: ubuntu-20.04
+    steps:
+      - name: GitHub Environment Variables Action
+        uses: FranzDiebold/github-env-vars-action@v1.2.1
+
+      - name: Checkout code
+        uses: actions/checkout@v2.2.0
+        with:
+          fetch-depth: 0
+
+      - name: Download compiled binary
+        uses: actions/download-artifact@v2
+        with:
+          name: build
 
       - name: Patch changelog (snapshot)
         run: |
@@ -54,6 +111,7 @@ jobs:
             --volume ${{ github.workspace }}:/src \
             --volume /tmp/artifacts/bin:/build \
             -e LINTIAN_TAGS_TO_SUPPRESS="debian-changelog-line-too-long,spelling-error-in-changelog,unreleased-changelog-distribution,package-supports-alternative-init-but-no-init.d-script" \
+            -e INSTALL_BUILD_DEPS=0 \
             pitop/deb-build:latest
 
       - name: Separate Debian source package files from binary
