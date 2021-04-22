@@ -5,8 +5,6 @@ WORKDIR /src
 
 RUN [ "cross-build-start" ]
 
-# Get binary name based on projects .pro file
-RUN export BINARY_NAME=$(ls src/ | grep -e '.pro$' | xargs -n 1 basename | cut -d '.' -f 1); echo $BINARY_NAME
 
 # Install base dependencies
 RUN install_packages \
@@ -21,6 +19,8 @@ RUN apt-get build-dep .
 ENV QT_SELECT=5
 RUN qmake src/*.pro
 RUN make -j$(nproc)
-RUN strip $BINARY_NAME
+
+# Get binary name based on projects .pro file & strip binary
+RUN export BINARY_NAME=$(ls src/ | grep -e '.pro$' | xargs -n 1 basename | cut -d '.' -f 1); strip $BINARY_NAME
 
 RUN [ "cross-build-end" ]
