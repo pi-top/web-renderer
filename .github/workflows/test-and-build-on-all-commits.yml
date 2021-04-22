@@ -70,7 +70,7 @@ jobs:
         run: |
           docker build -t qt-builder .
           docker create -ti --name qt-builder-tmp qt-builder bash
-          docker cp qt-builder-tmp:/src/pt-about {{ needs.check-needs-compiling.outputs.binary_name }}.
+          docker cp qt-builder-tmp:/src/pt-about {{ needs.check-needs-compiling.outputs.binary_name }} .
           docker rm -fv qt-builder-tmp
 
       - name: Upload binary
