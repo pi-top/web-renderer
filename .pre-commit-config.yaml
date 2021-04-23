@@ -1,31 +1,32 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.4.0
     hooks:
-    - id: trailing-whitespace
-    - id: end-of-file-fixer
-    - id: check-yaml
-    - id: check-added-large-files
-    - id: check-symlinks
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-symlinks
+      - id: pretty-format-json
+        args: ["--autofix"]
 
--   repo: https://github.com/jumanjihouse/pre-commit-hooks
+
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
     rev: 2.1.5
     hooks:
-    - id: shellcheck
-      args: [-x]
-    - id: shfmt
+      - id: shellcheck
+        args: [-x]
+      - id: shfmt
 
--   repo: git://github.com/detailyang/pre-commit-shell
+  - repo: git://github.com/detailyang/pre-commit-shell
     rev: 1.0.5
     hooks:
-    - id: shell-lint
-      args: [-x]
+      - id: shell-lint
+        args: [-x]
 
--   repo: https://github.com/pre-commit/mirrors-autopep8
+  - repo: https://github.com/pre-commit/mirrors-autopep8
     rev: v1.5.4
     hooks:
-    -   id: autopep8
-        name: autopep8-default
-        args: ["-i", "--ignore=E226,E24,W50,W690,E402", "--max-line-length=150"]
+      - id: autopep8
