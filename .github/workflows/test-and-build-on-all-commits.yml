@@ -47,7 +47,7 @@ jobs:
           if [[ ! -z $project_filename ]]; then
             conditions_met="true"
           fi
-          
+
           echo $project_filename
           echo "::set-output name=needs_compiling::${conditions_met}"
           echo "::set-output name=binary_name::${project_filename}"
