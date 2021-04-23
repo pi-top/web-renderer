@@ -56,6 +56,8 @@ jobs:
     needs: check-needs-compiling
     if: needs.check-needs-compiling.outputs.needs_compiling == 'true'
     runs-on: ubuntu-20.04
+    outputs:
+      binary_name: ${{ steps.set_binary_name.outputs.binary_name }}
     steps:
       - name: GitHub Environment Variables Action
         uses: FranzDiebold/github-env-vars-action@v1.2.1
@@ -69,7 +71,6 @@ jobs:
 
       - name: Compile application
         run: |
-          echo ${{ needs.check-needs-compiling.outputs.binary_name }}
           docker build -t qt-builder .
           docker create -ti --name qt-builder-tmp qt-builder bash
           docker cp qt-builder-tmp:/src/${{ needs.check-needs-compiling.outputs.binary_name }} .
@@ -80,6 +81,12 @@ jobs:
         with:
           name: build
           path: ${{ needs.check-needs-compiling.outputs.binary_name }}
+
+      - name: Set binary name variable
+        id: set_binary_name
+        run: |
+          echo "::set-output name=binary_name::${{ needs.check-needs-compiling.outputs.binary_name }}"
+
 
 
   build-debian-packages:
@@ -94,10 +101,16 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Remove existing binary
+        run: rm ${{ needs.compile-qt-app.outputs.binary_name }}
+
       - name: Download compiled binary
         uses: actions/download-artifact@v2
         with:
           name: build
+
+      - name: Fix binary permissions
+        run: chmod +x ${{ needs.compile-qt-app.outputs.binary_name }}
 
       - name: Patch changelog (snapshot)
         run: |
