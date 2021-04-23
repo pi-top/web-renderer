@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       needs_compiling: ${{ steps.check_needs_compiling.outputs.needs_compiling }}
-      binary_name: ${{ steps.check_needs_compiling.outputs.binary_name }}
+      binary_name: ${{ steps.check_needs_compiling.outputs.project_filename }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2.2.0
@@ -50,7 +50,7 @@ jobs:
 
           echo $project_filename
           echo "::set-output name=needs_compiling::${conditions_met}"
-          echo "::set-output name=binary_name::${project_filename}"
+          echo "::set-output name=project_filename::${project_filename}"
 
   compile-qt-app:
     needs: check-needs-compiling

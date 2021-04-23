@@ -21,6 +21,6 @@ RUN qmake src/*.pro
 RUN make -j$(nproc)
 
 # Get binary name based on projects .pro file & strip binary
-RUN export BINARY_NAME=$(ls src/ | grep -e '.pro$' | xargs -n 1 basename | cut -d '.' -f 1); strip $BINARY_NAME
+RUN export BINARY_NAME=$(find src -name "*.pro" | xargs -n 1 basename | cut -d '.' -f 1); strip $BINARY_NAME; ls -l
 
 RUN [ "cross-build-end" ]
