@@ -44,7 +44,7 @@ jobs:
         run: |
           conditions_met="false"
           project_filename=$(find src -name "*.pro" | xargs -n 1 basename | cut -d '.' -f 1)
-          if [[ ! -z $project_filename ]]
+          if [[ ! -z $project_filename ]]; then
             conditions_met="true"
           fi
           
