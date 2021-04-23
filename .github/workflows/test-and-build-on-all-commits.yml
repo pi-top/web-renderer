@@ -43,11 +43,11 @@ jobs:
         id: check_needs_compiling
         run: |
           conditions_met="false"
-          binary_name=""
-          if ls src/ | grep -q -e '.pro$'; then
+          binary_name=$(find src -name "*.pro" | xargs -n 1 basename | cut -d '.' -f 1)
+          if [[ ! -z $binary_name ]]; then
             conditions_met="true"
-            binary_name=$(ls src/ | grep -e '.pro$'  | xargs -n 1 basename | cut -d '.' -f 1)
           fi
+
           echo "::set-output name=needs_compiling::${conditions_met}"
           echo "::set-output name=binary_name::${binary_name}"
 
