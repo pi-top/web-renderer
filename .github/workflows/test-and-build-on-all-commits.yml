@@ -79,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: needs.check-needs-compiling.outputs.binary_name
+          path: {{ needs.check-needs-compiling.outputs.binary_name }}
 
 
   build-debian-packages:
