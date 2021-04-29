@@ -1,4 +1,5 @@
 #include <QGuiApplication>
+#include <QCommandLineParser>
 #include <QQmlApplicationEngine>
 #include <QScreen>
 #include <QThread>
@@ -94,6 +95,16 @@ int main(int argc, char *argv[])
 
   QGuiApplication app(argc, argv);
   QtWebEngine::initialize();
+
+  QCommandLineParser parser;
+  parser.setApplicationDescription(QGuiApplication::applicationDisplayName());
+  QCommandLineOption fullScreenMode(QStringList() << "f" << "fullscreen",
+      QCoreApplication::translate("main", "Fullscreen mode."));
+  parser.addOption(fullScreenMode);
+  parser.process(app);
+
+  bool fullScreenArg = parser.isSet(fullScreenMode);
+
   QStringList args = app.arguments();
   qDebug() << args;
 
@@ -166,13 +177,19 @@ int main(int argc, char *argv[])
   QString url = "http://localhost:80";
   rootObject->setProperty("url", url);
 
-  rootObject->setProperty("visibility", "FullScreen");
-
   const QSize &screenSize = app.primaryScreen()->size();
+  if (fullScreenArg) 
+  {
+    rootObject->setProperty("visibility", "FullScreen");
 
-  rootObject->setProperty("width", screenSize.width());
-  rootObject->setProperty("height", screenSize.height());
-
+    rootObject->setProperty("width", screenSize.width());
+    rootObject->setProperty("height", screenSize.height());
+  }
+  else
+  {
+    rootObject->setProperty("width", screenSize.width() * 0.55);
+    rootObject->setProperty("height", screenSize.height() * 0.65);
+  }
   rootObject->setProperty("initialised", true);
 
   qInfo() << "Waiting for backend web server response...";
