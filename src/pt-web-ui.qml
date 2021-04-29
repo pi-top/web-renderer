@@ -33,6 +33,7 @@ ApplicationWindow {
 
     profile: WebEngineProfile {
       httpCacheType: WebEngineProfile.NoCache
+      httpUserAgent: "pt-web-ui"
       offTheRecord: true
     }
 
