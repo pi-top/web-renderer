@@ -2,9 +2,9 @@
 export QT_SELECT := qt5
 
 %:
-  dh $@
+	dh $@
 
-# Build
-override_dh_autobuild:
-	qmake src/pt-web-ui.pro
-	make -j$(nproc)
+# # Build
+# override_dh_autobuild:
+# 	qmake src/pt-web-ui.pro
+# 	make -j$(nproc)

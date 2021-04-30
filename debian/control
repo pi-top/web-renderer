@@ -9,10 +9,7 @@ Build-Depends:
  qt5-qmake,
  qtbase5-dev-tools,
  qtwebengine5-dev,
-# These are dependencies of qtwebengine5-dev; added for debugging
- libqt5webengine5,
- libqt5webenginecore5,
- libqt5webenginewidgets5,
+ libqt5webkit5-dev,
 Standards-Version: 4.5.1
 Homepage: https://pi-top.com/
 
