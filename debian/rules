@@ -1,9 +1,8 @@
 #!/usr/bin/make -f
-
-ENV QT_SELECT=5
+export QT_SELECT := qt5
 
 %:
-	dh $@
+  dh $@
 
 # Build
 override_dh_autobuild:
