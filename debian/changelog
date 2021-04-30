@@ -1,3 +1,11 @@
+pt-web-ui (3.1.2) buster; urgency=medium
+
+  * Support windowed mode
+  * Add user agent
+  * Fix project structure to build automatically
+
+ -- pi-top <deb-maintainers@pi-top.com>  Fri, 30 Apr 2021 21:58:01 +0000
+
 pt-web-ui (3.1.1) buster; urgency=medium
 
   * Display localhost server on port 80 on application start
