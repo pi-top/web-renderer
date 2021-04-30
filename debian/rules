@@ -1,4 +1,11 @@
 #!/usr/bin/make -f
 
+ENV QT_SELECT=5
+
 %:
 	dh $@
+
+# Build
+override_dh_autobuild:
+	qmake src/pt-web-ui.pro
+	make -j$(nproc)
