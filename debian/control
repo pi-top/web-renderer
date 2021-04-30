@@ -8,13 +8,13 @@ Build-Depends:
  qtchooser (>= 55-gc9562a1-1~),
  qt5-qmake,
  qtbase5-dev-tools,
-# FIXME: Build process fails when installing dependency (GH Issue #6)
-# qtwebengine5-dev,
+ qtwebengine5-dev,
+ libqt5webkit5-dev,
 Standards-Version: 4.5.1
 Homepage: https://pi-top.com/
 
 Package: pt-web-ui
-Architecture: all
+Architecture: any
 Depends:
  ${misc:Depends},
  ${shlibs:Depends},
