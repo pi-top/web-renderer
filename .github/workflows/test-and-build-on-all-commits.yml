@@ -101,15 +101,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Remove existing binary
-        run: rm ${{ needs.compile-qt-app.outputs.binary_name }}
-
       - name: Download compiled binary
         uses: actions/download-artifact@v2
         with:
           name: build
 
       - name: Fix binary permissions
+        # actions/upload-artifact has issues with file permissions
         run: chmod +x ${{ needs.compile-qt-app.outputs.binary_name }}
 
       - name: Patch changelog (snapshot)
