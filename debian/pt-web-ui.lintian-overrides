@@ -1,3 +1,2 @@
 pt-web-ui: binary-without-manpage
-pt-web-ui: hardening-no-pie usr/bin/pt-web-ui
 pt-web-ui: arch-independent-package-contains-binary-or-object usr/bin/pt-web-ui
