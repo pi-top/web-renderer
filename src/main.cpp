@@ -1,4 +1,5 @@
 #include <QGuiApplication>
+#include <QCommandLineParser>
 #include <QQmlApplicationEngine>
 #include <QScreen>
 #include <QThread>
@@ -94,6 +95,28 @@ int main(int argc, char *argv[])
 
   QGuiApplication app(argc, argv);
   QtWebEngine::initialize();
+
+  QCommandLineParser parser;
+  parser.setApplicationDescription(QGuiApplication::applicationDisplayName());
+  QCommandLineOption windowedModeOption(QStringList() << "wm" << "windowed", "windowed mode");
+  parser.addOption(windowedModeOption);
+  QCommandLineOption widthOption(QStringList() << "w" << "window-width", "window width relative to screen", "width", "0.65");
+  parser.addOption(widthOption);
+  QCommandLineOption heightOption(QStringList() << "h" << "window-height", "window height relative to screen", "height", "0.55");
+  parser.addOption(heightOption);
+
+  parser.process(app);
+
+  bool windowedModeArg = parser.isSet(windowedModeOption);
+
+  bool widthArg;
+  QString widthStr = parser.value(widthOption);
+  float width = widthStr.toFloat(&widthArg);
+
+  bool heightArg;
+  QString heightStr = parser.value(heightOption);
+  float height = heightStr.toFloat(&heightArg);
+
   QStringList args = app.arguments();
   qDebug() << args;
 
@@ -166,13 +189,21 @@ int main(int argc, char *argv[])
   QString url = "http://localhost:80";
   rootObject->setProperty("url", url);
 
-  rootObject->setProperty("visibility", "FullScreen");
-
   const QSize &screenSize = app.primaryScreen()->size();
-
-  rootObject->setProperty("width", screenSize.width());
-  rootObject->setProperty("height", screenSize.height());
-
+  if (windowedModeArg && widthArg)
+  {
+    rootObject->setProperty("width", width*screenSize.width());
+  }
+  if (windowedModeArg && heightArg)
+  {
+    rootObject->setProperty("height", height*screenSize.height());
+  }
+  if (! windowedModeArg)
+  {
+    rootObject->setProperty("visibility", "FullScreen");
+    rootObject->setProperty("width", screenSize.width());
+    rootObject->setProperty("height", screenSize.height());
+  }
   rootObject->setProperty("initialised", true);
 
   qInfo() << "Waiting for backend web server response...";
