@@ -104,6 +104,10 @@ int main(int argc, char *argv[])
   parser.addOption(widthOption);
   QCommandLineOption heightOption(QStringList() << "h" << "window-height", "window height relative to screen", "height", "0.55");
   parser.addOption(heightOption);
+  QCommandLineOption urlOption(QStringList() << "u" << "url", "url to open", "url", "http://localhost:80");
+  parser.addOption(urlOption);
+  QCommandLineOption titleOption(QStringList() << "t" << "window-title", "window title", "title", "");
+  parser.addOption(titleOption);
 
   parser.process(app);
 
@@ -116,6 +120,9 @@ int main(int argc, char *argv[])
   bool heightArg;
   QString heightStr = parser.value(heightOption);
   float height = heightStr.toFloat(&heightArg);
+
+  QString url = parser.value(urlOption);
+  QString title = parser.value(titleOption);
 
   QStringList args = app.arguments();
   qDebug() << args;
@@ -182,12 +189,8 @@ int main(int argc, char *argv[])
   ////////////////
   qInfo() << "Configuring view";
 
-  QString title = QStringLiteral("pi-topOS First Time Setup");
   app.setApplicationName(title);
   rootObject->setProperty("title", title);
-
-  QString url = "http://localhost:80";
-  rootObject->setProperty("url", url);
 
   const QSize &screenSize = app.primaryScreen()->size();
   if (windowedModeArg && widthArg)
@@ -204,6 +207,7 @@ int main(int argc, char *argv[])
     rootObject->setProperty("width", screenSize.width());
     rootObject->setProperty("height", screenSize.height());
   }
+  rootObject->setProperty("url", url);
   rootObject->setProperty("initialised", true);
 
   qInfo() << "Waiting for backend web server response...";
