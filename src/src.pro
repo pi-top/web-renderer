@@ -11,7 +11,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 QT += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = pt-web-ui
+TARGET = web-renderer
 TEMPLATE = app
 
 DESTDIR = ../bin
@@ -41,7 +41,7 @@ LIBS += -lcrypt
 
 RESOURCES += qml.qrc
 linux:contains(QMAKE_HOST.arch, arm.*) {
-    # Leave out QRC to fetch from /usr/lib/pt-web-ui/ on Pi
+    # Leave out QRC to fetch from /usr/lib/web-renderer/ on Pi
     RESOURCES -= qml.qrc
 }
 

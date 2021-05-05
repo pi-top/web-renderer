@@ -9,7 +9,7 @@ ConsoleLogHandler::ConsoleLogHandler(QObject *parent) :
 
 void ConsoleLogHandler::handleLog(int level, QString message, int lineNumber, QString sourceID)
 {
-    QString msg = "[pt-web-ui CONSOLE][source: " + sourceID + "] [line: " + QString::number(lineNumber) + "]:\n" + message;
+    QString msg = "[web-renderer CONSOLE][source: " + sourceID + "] [line: " + QString::number(lineNumber) + "]:\n" + message;
     QString txt;
     switch(level)
     {

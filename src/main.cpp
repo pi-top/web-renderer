@@ -123,11 +123,11 @@ int main(int argc, char *argv[])
   QString configFilePath;
   if (isPi())
   {
-    configFilePath = "/usr/lib/pt-web-ui/pt-web-ui.json";
+    configFilePath = "/usr/lib/web-renderer/web-renderer.json";
   }
   else
   {
-    configFilePath = "pt-web-ui.json";
+    configFilePath = "web-renderer.json";
   }
 
   qInfo().noquote() << "Config file path:" << configFilePath;
@@ -158,11 +158,11 @@ int main(int argc, char *argv[])
   QQmlApplicationEngine engine;
   if (isPi())
   {
-    engine.load(QUrl(QStringLiteral("/usr/lib/pt-web-ui/pt-web-ui.qml")));
+    engine.load(QUrl(QStringLiteral("/usr/lib/web-renderer/web-renderer.qml")));
   }
   else
   {
-    engine.load(QUrl(QStringLiteral("qrc:/pt-web-ui.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/web-renderer.qml")));
   }
 
   if (engine.rootObjects().isEmpty())

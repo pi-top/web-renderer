@@ -1,3 +1,9 @@
+web-renderer (4.0.0) buster; urgency=medium
+
+  * Rename package
+
+ -- pi-top <deb-maintainers@pi-top.com>  Wed, 05 May 2021 15:35:32 +0000
+
 pt-web-ui (3.1.2) buster; urgency=medium
 
   * Support windowed mode
