@@ -1,5 +1,6 @@
-#include <QGuiApplication>
+#include <QCommandLineOption>
 #include <QCommandLineParser>
+#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QScreen>
 #include <QThread>
@@ -84,32 +85,31 @@ int runCommand(const QString &command, const QStringList &args, int timeout,
 
 int main(int argc, char *argv[])
 {
-  int defaultLoggingMode = LoggingMode::Console | LoggingMode::Journal;
-#ifdef QT_DEBUG
-  int defaultLogLevel = LOG_DEBUG;
-#else
-  int defaultLogLevel = LOG_INFO;
-#endif
-
-  PTLogger::initialiseLogger(defaultLoggingMode, defaultLogLevel);
 
   QGuiApplication app(argc, argv);
   QtWebEngine::initialize();
 
   QCommandLineParser parser;
-  parser.setApplicationDescription(QGuiApplication::applicationDisplayName());
-  QCommandLineOption windowedModeOption(QStringList() << "wm" << "windowed", "windowed mode");
+  parser.setApplicationDescription("Present web content in a way that looks like a native application window");
+  QCommandLineOption windowedModeOption(QStringList() << "wm" << "windowed", "Start application in windowed mode.");
   parser.addOption(windowedModeOption);
-  QCommandLineOption widthOption(QStringList() << "w" << "window-width", "window width relative to screen", "width", "0.65");
+  QCommandLineOption widthOption(QStringList() << "ww" << "width", "Window width relative to screen, from 0 to 1.", "width", "0.65");
   parser.addOption(widthOption);
-  QCommandLineOption heightOption(QStringList() << "h" << "window-height", "window height relative to screen", "height", "0.55");
+  QCommandLineOption heightOption(QStringList() << "wh" << "height", "Window height relative to screen, from 0 to 1.", "height", "0.55");
   parser.addOption(heightOption);
-  QCommandLineOption urlOption(QStringList() << "u" << "url", "url to open", "url", "http://localhost:80");
+  QCommandLineOption urlOption(QStringList() << "u" << "url", "URL to open. Defaults to localhost.", "url", "http://localhost:80");
   parser.addOption(urlOption);
-  QCommandLineOption titleOption(QStringList() << "t" << "window-title", "window title", "title", "");
+  QCommandLineOption titleOption(QStringList() << "t" << "title", "Specify a title for the window.", "title", "");
   parser.addOption(titleOption);
+  QCommandLineOption helpOption = parser.addHelpOption();
 
   parser.process(app);
+
+  if (parser.isSet(helpOption))
+  {
+    parser.showHelp();
+    return 0;
+  }
 
   bool windowedModeArg = parser.isSet(windowedModeOption);
 
@@ -123,6 +123,15 @@ int main(int argc, char *argv[])
 
   QString url = parser.value(urlOption);
   QString title = parser.value(titleOption);
+
+  int defaultLoggingMode = LoggingMode::Console | LoggingMode::Journal;
+#ifdef QT_DEBUG
+  int defaultLogLevel = LOG_DEBUG;
+#else
+  int defaultLogLevel = LOG_INFO;
+#endif
+
+  PTLogger::initialiseLogger(defaultLoggingMode, defaultLogLevel);
 
   QStringList args = app.arguments();
   qDebug() << args;
