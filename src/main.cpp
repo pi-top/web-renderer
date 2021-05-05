@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
   QtWebEngine::initialize();
 
   QCommandLineParser parser;
-  parser.setApplicationDescription("Present web content in a way that looks like a native application window");
+  parser.setApplicationDescription("Application that presents web content in a way that looks like a native application window");
   QCommandLineOption windowedModeOption(QStringList() << "wm" << "windowed", "Start application in windowed mode.");
   parser.addOption(windowedModeOption);
   QCommandLineOption widthOption(QStringList() << "ww" << "width", "Window width relative to screen, from 0 to 1.", "width", "0.65");
@@ -140,8 +140,10 @@ int main(int argc, char *argv[])
   parser.addOption(heightOption);
   QCommandLineOption urlOption(QStringList() << "u" << "url", "URL to open. Defaults to localhost.", "url", "http://localhost:80");
   parser.addOption(urlOption);
-  QCommandLineOption titleOption(QStringList() << "t" << "title", "Specify a title for the window.", "title", "");
+  QCommandLineOption titleOption(QStringList() << "t" << "title", "Specify a title for the window.", "title", "web-renderer");
   parser.addOption(titleOption);
+  QCommandLineOption showWindowFrameOption(QStringList() << "wf" << "show-window-frame", "Show the frame of the window.");
+  parser.addOption(showWindowFrameOption);
   QCommandLineOption helpOption = parser.addHelpOption();
 
   parser.process(app);
@@ -153,6 +155,7 @@ int main(int argc, char *argv[])
   }
 
   bool windowedModeArg = parser.isSet(windowedModeOption);
+  bool showWindowFrameArg = parser.isSet(showWindowFrameOption);
 
   bool widthArg;
   QString widthStr = parser.value(widthOption);
@@ -258,6 +261,13 @@ int main(int argc, char *argv[])
     rootObject->setProperty("height", screenSize.height());
   }
   rootObject->setProperty("url", url);
+
+  if (showWindowFrameArg)
+  {
+    window->setFlag(Qt::FramelessWindowHint, false);
+  }
+
+
   rootObject->setProperty("initialised", true);
 
   waitForServerResponse(url);
