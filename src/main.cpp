@@ -115,12 +115,10 @@ void waitForServerResponse(const QUrl url)
       qInfo() << "Backend web server responded!";
       break;
     }
-    else
-    {
-      qInfo()
-          << "Backend web server did not respond - sleeping for 1 second...";
-      QThread::sleep(1);
-    }
+
+    qInfo() << "Backend web server did not respond - sleeping for 1 second...";
+    QThread::sleep(1);
+    ++counter;
   }
 }
 
