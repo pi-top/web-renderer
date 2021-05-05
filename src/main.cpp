@@ -5,6 +5,7 @@
 #include <QScreen>
 #include <QThread>
 #include <QtWebEngine>
+#include <QUrl>
 
 #include "config.h"
 #include "console_log_handler.h"
@@ -83,6 +84,46 @@ int runCommand(const QString &command, const QStringList &args, int timeout,
   return exitCode;
 }
 
+void waitForServerResponse(const QUrl url)
+{
+  qInfo() << "Waiting for backend web server response...";
+  bool serverIsUp = false;
+  int counter = 0;
+  int counterMax = 30;
+  while (serverIsUp == false)
+  {
+    if (counter >= counterMax)
+    {
+      qFatal("Unable to contact web server!");
+      exit(1);
+    }
+
+    QString resp;
+    int exitCode = runCommand("curl",
+                              QStringList() << "--max-time"
+                                            << "1"
+                                            << "--silent"
+                                            << "--fail"
+                                            << "--output"
+                                            << "/dev/null" << url.toString(),
+                              1000, resp);
+
+    qDebug() << exitCode;
+
+    if (exitCode == 0)
+    {
+      qInfo() << "Backend web server responded!";
+      break;
+    }
+    else
+    {
+      qInfo()
+          << "Backend web server did not respond - sleeping for 1 second...";
+      QThread::sleep(1);
+    }
+  }
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -121,8 +162,8 @@ int main(int argc, char *argv[])
   QString heightStr = parser.value(heightOption);
   float height = heightStr.toFloat(&heightArg);
 
-  QString url = parser.value(urlOption);
-  QString title = parser.value(titleOption);
+  const QUrl url(parser.value(urlOption));
+  const QString title = parser.value(titleOption);
 
   int defaultLoggingMode = LoggingMode::Console | LoggingMode::Journal;
 #ifdef QT_DEBUG
@@ -219,42 +260,7 @@ int main(int argc, char *argv[])
   rootObject->setProperty("url", url);
   rootObject->setProperty("initialised", true);
 
-  qInfo() << "Waiting for backend web server response...";
-  bool serverIsUp = false;
-  int counter = 0;
-  int counterMax = 30;
-  while (serverIsUp == false)
-  {
-    if (counter >= counterMax)
-    {
-      qFatal("Unable to contact web server!");
-      exit(1);
-    }
-
-    QString resp;
-    int exitCode = runCommand("curl",
-                              QStringList() << "--max-time"
-                                            << "1"
-                                            << "--silent"
-                                            << "--fail"
-                                            << "--output"
-                                            << "/dev/null" << url,
-                              1000, resp);
-
-    qDebug() << exitCode;
-
-    if (exitCode == 0)
-    {
-      qInfo() << "Backend web server responded!";
-      break;
-    }
-    else
-    {
-      qInfo()
-          << "Backend web server did not respond - sleeping for 1 second...";
-      QThread::sleep(1);
-    }
-  }
+  waitForServerResponse(url);
 
   ///////////////
   // MAIN LOOP //
