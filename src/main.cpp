@@ -142,6 +142,8 @@ int main(int argc, char *argv[])
   parser.addOption(urlOption);
   QCommandLineOption titleOption(QStringList() << "t" << "title", "Specify a title for the window.", "title", "web-renderer");
   parser.addOption(titleOption);
+  QCommandLineOption iconOption(QStringList() << "i" << "icon", "Specify the path to an icon to be set as the application icon.", "path", "");
+  parser.addOption(iconOption);
   QCommandLineOption showWindowFrameOption(QStringList() << "wf" << "show-window-frame", "Show the frame of the window.");
   parser.addOption(showWindowFrameOption);
   QCommandLineOption helpOption = parser.addHelpOption();
@@ -167,6 +169,7 @@ int main(int argc, char *argv[])
 
   const QUrl url(parser.value(urlOption));
   const QString title = parser.value(titleOption);
+  const QString iconArg = parser.value(iconOption);
 
   int defaultLoggingMode = LoggingMode::Console | LoggingMode::Journal;
 #ifdef QT_DEBUG
@@ -267,6 +270,11 @@ int main(int argc, char *argv[])
     window->setFlag(Qt::FramelessWindowHint, false);
   }
 
+  if (!iconArg.isEmpty())
+  {
+    const QIcon icon(iconArg);
+    app.setWindowIcon(icon);
+  }
 
   rootObject->setProperty("initialised", true);
 
