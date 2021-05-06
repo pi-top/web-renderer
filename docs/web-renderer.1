@@ -1,0 +1,34 @@
+.TH "WEB-RENDERER" 1
+.SH NAME
+web-renderer \- present web content in a native-looking window
+.SH SYNOPSIS
+web-renderer [options]
+.SH DESCRIPTION
+Application that presents web content in a way that looks like a native application window.
+The application will start in fullscreen mode by default.
+.SH OPTIONS
+--wm, --windowed            Start application in windowed mode.
+
+--ww, --width <width>       Window width relative to screen, from 0 to 1.
+
+--wh, --height <height>     Window height relative to screen, from 0 to 1.
+
+-u, --url <url>             URL to open. Defaults to localhost.
+
+-t, --window-title <title>  Specify a title for the window.
+
+-i, --icon <path>           Specify the path to an icon to be set as the application icon.
+
+--wf, --show-window-frame   Show the frame of the window.
+
+-h, --help                  Displays a help message.
+.SH EXAMPLE
+Open google in a window:
+$ web-renderer --window-title "Google" --url https://google.com --windowed --width 0.7 --height 0.8
+
+Open a local server in fullscreen:
+$ web-renderer --window-title "My Local Server" --url http://localhost:3000
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+pi-top (deb-maintainers@pi-top.com)
