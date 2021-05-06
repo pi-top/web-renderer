@@ -8,10 +8,10 @@ This repository was inspired by [kernelconcepts' `qt-mini-browser`](https://gith
 
 #### Test with Google
 ``` bash
-  ./web-renderer --title "Google" --url https://google.com --width 0.7 --height 0.8
+  ./web-renderer --window-title "Google" --url https://google.com --width 0.7 --height 0.8
 ```
 
 #### Fullscreen Local Server
 ``` bash
-  ./web-renderer --title "My Local Server" --url http://localhost --fullscreen
+  ./web-renderer --window-title "My Local Server" --url http://localhost --fullscreen
 ```

@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
   parser.addOption(heightOption);
   QCommandLineOption urlOption(QStringList() << "u" << "url", "URL to open. Defaults to localhost.", "url", "http://localhost:80");
   parser.addOption(urlOption);
-  QCommandLineOption titleOption(QStringList() << "t" << "title", "Specify a title for the window.", "title", "web-renderer");
+  QCommandLineOption titleOption(QStringList() << "t" << "window-title", "Specify a title for the window.", "title", "web-renderer");
   parser.addOption(titleOption);
   QCommandLineOption iconOption(QStringList() << "i" << "icon", "Specify the path to an icon to be set as the application icon.", "path", "");
   parser.addOption(iconOption);
@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
   float height = heightStr.toFloat(&heightArg);
 
   const QUrl url(parser.value(urlOption));
-  const QString title = parser.value(titleOption);
+  const QString titleArg = parser.value(titleOption);
   const QString iconArg = parser.value(iconOption);
 
   int defaultLoggingMode = LoggingMode::Console | LoggingMode::Journal;
@@ -243,8 +243,8 @@ int main(int argc, char *argv[])
   ////////////////
   qInfo() << "Configuring view";
 
-  app.setApplicationName(title);
-  rootObject->setProperty("title", title);
+  app.setApplicationName(titleArg);
+  rootObject->setProperty("title", titleArg);
 
   const QSize &screenSize = app.primaryScreen()->size();
   if (windowedModeArg && widthArg)
