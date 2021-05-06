@@ -26,6 +26,10 @@ Depends:
  qml-module-qtquick2,
  qml-module-qtquick-controls2,
  qml-module-qtwebengine,
+Breaks:
+ pt-web-ui (<< 4.0.0),
+Replaces:
+ pt-web-ui (<< 4.0.0),
 Description: pi-top Web UI
  Minimal web browser intended for making web-served frontends appear
  native. Not designed to be used standalone. Internally configured based
