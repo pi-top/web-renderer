@@ -138,12 +138,12 @@ int main(int argc, char *argv[])
   parser.addOption(heightOption);
   QCommandLineOption urlOption(QStringList() << "u" << "url", "URL to open. Defaults to localhost.", "url", "http://localhost:80");
   parser.addOption(urlOption);
-  QCommandLineOption titleOption(QStringList() << "t" << "window-title", "Specify a title for the window.", "title", "web-renderer");
+  QCommandLineOption titleOption(QStringList() << "t" << "window-title", "Specify a title for the window. This will appear in the title bar.", "title", "web-renderer");
   parser.addOption(titleOption);
   QCommandLineOption iconOption(QStringList() << "i" << "icon", "Specify the path to an icon to be set as the application icon.", "path", "");
   parser.addOption(iconOption);
-  QCommandLineOption showWindowFrameOption(QStringList() << "wf" << "show-window-frame", "Show the frame of the window.");
-  parser.addOption(showWindowFrameOption);
+  QCommandLineOption hideWindowFrameOption(QStringList() << "hide-window-frame", "Hide the frame (title bar and border) of the window. This means there will be no 'close', 'minimize' and 'maximize' buttons. Without this, the user cannot move or resize the window via the window system.");
+  parser.addOption(hideWindowFrameOption);
   QCommandLineOption helpOption = parser.addHelpOption();
 
   parser.process(app);
@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
   }
 
   bool kioskModeArg = parser.isSet(kioskModeOption);
-  bool showWindowFrameArg = parser.isSet(showWindowFrameOption);
+  bool hideWindowFrameArg = parser.isSet(hideWindowFrameOption);
 
   bool widthArg;
   QString widthStr = parser.value(widthOption);
@@ -265,10 +265,7 @@ int main(int argc, char *argv[])
   }
   rootObject->setProperty("url", url);
 
-  if (showWindowFrameArg)
-  {
-    window->setFlag(Qt::FramelessWindowHint, false);
-  }
+  window->setFlag(Qt::FramelessWindowHint, hideWindowFrameArg);
 
   if (!iconArg.isEmpty())
   {
