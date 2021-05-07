@@ -1,13 +1,15 @@
 .TH "WEB-RENDERER" 1
 .SH NAME
 web-renderer \- present web content in a native-looking window
+
 .SH SYNOPSIS
-web-renderer [options]
+web-renderer [options] url
+
 .SH DESCRIPTION
 Application that presents web content in a way that looks like a native application window.
 The application will start in fullscreen mode by default.
-.SH OPTIONS
 
+.SH OPTIONS
 
 .INDENT 0.0
 .TP
@@ -35,7 +37,7 @@ Specify the path to an icon to be set as the application icon. This will appear 
 
 .INDENT 0.0
 .TP
-.B --hide-window-frame
+.B --hide-frame
 Hide the frame (title bar and border) of the window. This means there will be no 'close', 'minimize' and 'maximize' buttons. Without this, the user cannot move or resize the window via the window system.
 .UNINDENT
 

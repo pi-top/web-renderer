@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
   parser.addOption(titleOption);
   QCommandLineOption iconOption(QStringList() << "i" << "icon", "Specify the path to an icon to be set as the application icon. This will appear in the title bar (unless the '--hide-frame' option is selected), and in the application bar.", "path", "");
   parser.addOption(iconOption);
-  QCommandLineOption hideWindowFrameOption(QStringList() << "hide-window-frame", "Hide the frame (title bar and border) of the window. This means there will be no 'close', 'minimize' and 'maximize' buttons. Without this, the user cannot move or resize the window via the window system.");
+  QCommandLineOption hideWindowFrameOption(QStringList() << "hide-frame", "Hide the frame (title bar and border) of the window. This means there will be no 'close', 'minimize' and 'maximize' buttons. Without this, the user cannot move or resize the window via the window system.");
   parser.addOption(hideWindowFrameOption);
   QCommandLineOption helpOption = parser.addHelpOption();
 
