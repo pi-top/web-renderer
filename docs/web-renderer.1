@@ -7,27 +7,58 @@ web-renderer [options]
 Application that presents web content in a way that looks like a native application window.
 The application will start in fullscreen mode by default.
 .SH OPTIONS
---wm, --windowed            Start application in windowed mode.
 
---ww, --width <width>       Window width relative to screen, from 0 to 1.
 
---wh, --height <height>     Window height relative to screen, from 0 to 1.
+.INDENT 0.0
+.TP
+.B -k, --kiosk
+Start in kiosk mode. In this mode, the application will start in fullscreen with minimal UI. It will prevent the user from quitting or performing any interaction outside of usage of the application
+.UNINDENT
 
--u, --url <url>             URL to open. Defaults to localhost.
+.INDENT 0.0
+.TP
+.B -s, --size <size>
+Window size relative to screen, expressed as '<width_scalar>x<height_scalar>' (e.g. '0.6x0.4'), where each scalar is a decimal number from 0 to 1.
+.UNINDENT
 
--t, --window-title <title>  Specify a title for the window.
+.INDENT 0.0
+.TP
+.B -t, --window-title <title>
+Specify a title for the window. This will appear in the title bar.
+.UNINDENT
 
--i, --icon <path>           Specify the path to an icon to be set as the application icon.
+.INDENT 0.0
+.TP
+.B -i, --icon <path>
+Specify the path to an icon to be set as the application icon. This will appear in the title bar (unless the '--hide-frame' option is selected), and in the application bar.
+.UNINDENT
 
---wf, --show-window-frame   Show the frame of the window.
+.INDENT 0.0
+.TP
+.B --hide-window-frame
+Hide the frame (title bar and border) of the window. This means there will be no 'close', 'minimize' and 'maximize' buttons. Without this, the user cannot move or resize the window via the window system.
+.UNINDENT
 
--h, --help                  Displays a help message.
+.INDENT 0.0
+.TP
+.B -h, --help
+Show a help message and exits.
+.UNINDENT
+
 .SH EXAMPLE
-Open google in a window:
-$ web-renderer --window-title "Google" --url https://google.com --windowed --width 0.7 --height 0.8
 
-Open a local server in fullscreen:
-$ web-renderer --window-title "My Local Server" --url http://localhost:3000
+.INDENT 0.0
+.TP
+.B Open Google in a window
+$ web-renderer --window-title "Google" --size 0.7x0.8 http://www.google.com
+.UNINDENT
+
+.INDENT 0.0
+.TP
+.B Open a local server in kiosk mode
+$ web-renderer --window-title "My Local Server" --kiosk http://localhost:3000
+.UNINDENT
+
 .SH BUGS
 No known bugs.
 .SH AUTHOR
