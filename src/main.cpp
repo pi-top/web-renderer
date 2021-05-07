@@ -130,8 +130,8 @@ int main(int argc, char *argv[])
 
   QCommandLineParser parser;
   parser.setApplicationDescription("Application that presents web content in a way that looks like a native application window");
-  QCommandLineOption windowedModeOption(QStringList() << "wm" << "windowed", "Start application in windowed mode.");
-  parser.addOption(windowedModeOption);
+  QCommandLineOption kioskModeOption(QStringList() << "k" << "kiosk", "Start in kiosk mode. In this mode, the application will start in fullscreen with minimal UI. It will prevent the user from quitting or performing any interaction outside of usage of the application");
+  parser.addOption(kioskModeOption);
   QCommandLineOption widthOption(QStringList() << "ww" << "width", "Window width relative to screen, from 0 to 1.", "width", "0.65");
   parser.addOption(widthOption);
   QCommandLineOption heightOption(QStringList() << "wh" << "height", "Window height relative to screen, from 0 to 1.", "height", "0.55");
@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
     return 0;
   }
 
-  bool windowedModeArg = parser.isSet(windowedModeOption);
+  bool kioskModeArg = parser.isSet(kioskModeOption);
   bool showWindowFrameArg = parser.isSet(showWindowFrameOption);
 
   bool widthArg;
@@ -247,19 +247,21 @@ int main(int argc, char *argv[])
   rootObject->setProperty("title", titleArg);
 
   const QSize &screenSize = app.primaryScreen()->size();
-  if (windowedModeArg && widthArg)
-  {
-    rootObject->setProperty("width", width*screenSize.width());
-  }
-  if (windowedModeArg && heightArg)
-  {
-    rootObject->setProperty("height", height*screenSize.height());
-  }
-  if (! windowedModeArg)
+  if (kioskModeArg)
   {
     rootObject->setProperty("visibility", "FullScreen");
     rootObject->setProperty("width", screenSize.width());
     rootObject->setProperty("height", screenSize.height());
+  }
+  if (!kioskModeArg && widthArg)
+  {
+    rootObject->setProperty("visibility", "Windowed");
+    rootObject->setProperty("width", width*screenSize.width());
+  }
+  if (!kioskModeArg && heightArg)
+  {
+    rootObject->setProperty("visibility", "Windowed");
+    rootObject->setProperty("height", height*screenSize.height());
   }
   rootObject->setProperty("url", url);
 
