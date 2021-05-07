@@ -122,6 +122,26 @@ void waitForServerResponse(const QUrl url)
   }
 }
 
+void parseSizeArgument(QString sizeStr, float &width, float &height)
+{
+  QRegExp rx("x");
+  QStringList sizeList = sizeStr.split(rx, QString::SkipEmptyParts);
+
+  if (sizeList.size() != 2)
+  {
+    qFatal("Error: Invalid size argument. Make sure it's in the format '<width_scalar>x<height_scalar>' where each scalar is a decimal number from 0 to 1 (e.g.: '0.6x0.4').");
+    exit(1);
+  }
+
+  width = sizeList.at(0).toFloat();
+  height = sizeList.at(1).toFloat();
+  if (width <= 0.0 || width > 1.0 || height <= 0.0 || height > 1.0)
+  {
+    qFatal("Error: size scalars must be a decimal number from 0 to 1 (e.g.: '0.6x0.4').");
+    exit(1);
+  }
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -132,10 +152,8 @@ int main(int argc, char *argv[])
   parser.setApplicationDescription("Application that presents web content in a way that looks like a native application window");
   QCommandLineOption kioskModeOption(QStringList() << "k" << "kiosk", "Start in kiosk mode. In this mode, the application will start in fullscreen with minimal UI. It will prevent the user from quitting or performing any interaction outside of usage of the application");
   parser.addOption(kioskModeOption);
-  QCommandLineOption widthOption(QStringList() << "ww" << "width", "Window width relative to screen, from 0 to 1.", "width", "0.65");
-  parser.addOption(widthOption);
-  QCommandLineOption heightOption(QStringList() << "wh" << "height", "Window height relative to screen, from 0 to 1.", "height", "0.55");
-  parser.addOption(heightOption);
+  QCommandLineOption sizeOption(QStringList() << "s" << "size", "Window size relative to screen, expressed as '<width_scalar>x<height_scalar>' (e.g. '0.6x0.4'), where each scalar is a decimal number from 0 to 1.", "size", "0.65x0.55");
+  parser.addOption(sizeOption);
   QCommandLineOption urlOption(QStringList() << "u" << "url", "URL to open. Defaults to localhost.", "url", "http://localhost:80");
   parser.addOption(urlOption);
   QCommandLineOption titleOption(QStringList() << "t" << "window-title", "Specify a title for the window. This will appear in the title bar.", "title", "web-renderer");
@@ -157,13 +175,9 @@ int main(int argc, char *argv[])
   bool kioskModeArg = parser.isSet(kioskModeOption);
   bool hideWindowFrameArg = parser.isSet(hideWindowFrameOption);
 
-  bool widthArg;
-  QString widthStr = parser.value(widthOption);
-  float width = widthStr.toFloat(&widthArg);
-
-  bool heightArg;
-  QString heightStr = parser.value(heightOption);
-  float height = heightStr.toFloat(&heightArg);
+  QString sizeStr = parser.value(sizeOption);
+  float width, height;
+  parseSizeArgument(sizeStr, width, height);
 
   const QUrl url(parser.value(urlOption));
   const QString titleArg = parser.value(titleOption);
@@ -253,15 +267,11 @@ int main(int argc, char *argv[])
     rootObject->setProperty("width", screenSize.width());
     rootObject->setProperty("height", screenSize.height());
   }
-  if (!kioskModeArg && widthArg)
-  {
-    rootObject->setProperty("visibility", "Windowed");
-    rootObject->setProperty("width", width*screenSize.width());
-  }
-  if (!kioskModeArg && heightArg)
+  else
   {
     rootObject->setProperty("visibility", "Windowed");
     rootObject->setProperty("height", height*screenSize.height());
+    rootObject->setProperty("width", width*screenSize.width());
   }
   rootObject->setProperty("url", url);
 
