@@ -94,7 +94,7 @@ void waitForServerResponse(const QUrl url)
   {
     if (counter >= counterMax)
     {
-      qFatal("Unable to contact web server!");
+      qCritical("Unable to contact web server!");
       exit(1);
     }
 
@@ -129,7 +129,7 @@ void parseSizeArgument(QString sizeStr, float &width, float &height)
 
   if (sizeList.size() != 2)
   {
-    qFatal("Error: Invalid size argument. Make sure it's in the format '<width_scalar>x<height_scalar>' where each scalar is a decimal number from 0 to 1 (e.g.: '0.6x0.4').");
+    qCritical("Error: Invalid size argument. Make sure it's in the format '<width_scalar>x<height_scalar>' where each scalar is a decimal number from 0 to 1 (e.g.: '0.6x0.4').");
     exit(1);
   }
 
@@ -137,7 +137,7 @@ void parseSizeArgument(QString sizeStr, float &width, float &height)
   height = sizeList.at(1).toFloat();
   if (width <= 0.0 || width > 1.0 || height <= 0.0 || height > 1.0)
   {
-    qFatal("Error: size scalars must be a decimal number from 0 to 1 (e.g.: '0.6x0.4').");
+    qCritical("Error: size scalars must be a decimal number from 0 to 1 (e.g.: '0.6x0.4').");
     exit(1);
   }
 }
@@ -150,12 +150,13 @@ int main(int argc, char *argv[])
 
   QCommandLineParser parser;
   parser.setApplicationDescription("Application that presents web content in a way that looks like a native application window");
+
+  parser.addPositionalArgument("url", "URL to open");
+
   QCommandLineOption kioskModeOption(QStringList() << "k" << "kiosk", "Start in kiosk mode. In this mode, the application will start in fullscreen with minimal UI. It will prevent the user from quitting or performing any interaction outside of usage of the application");
   parser.addOption(kioskModeOption);
   QCommandLineOption sizeOption(QStringList() << "s" << "size", "Window size relative to screen, expressed as '<width_scalar>x<height_scalar>' (e.g. '0.6x0.4'), where each scalar is a decimal number from 0 to 1.", "size", "0.65x0.55");
   parser.addOption(sizeOption);
-  QCommandLineOption urlOption(QStringList() << "u" << "url", "URL to open. Defaults to localhost.", "url", "http://localhost:80");
-  parser.addOption(urlOption);
   QCommandLineOption titleOption(QStringList() << "t" << "window-title", "Specify a title for the window. This will appear in the title bar.", "title", "web-renderer");
   parser.addOption(titleOption);
   QCommandLineOption iconOption(QStringList() << "i" << "icon", "Specify the path to an icon to be set as the application icon. This will appear in the title bar (unless the '--hide-frame' option is selected), and in the application bar.", "path", "");
@@ -168,7 +169,7 @@ int main(int argc, char *argv[])
 
   if (parser.isSet(helpOption))
   {
-    parser.showHelp();
+    parser.showHelp(0);
     return 0;
   }
 
@@ -179,9 +180,22 @@ int main(int argc, char *argv[])
   float width, height;
   parseSizeArgument(sizeStr, width, height);
 
-  const QUrl url(parser.value(urlOption));
   const QString titleArg = parser.value(titleOption);
   const QString iconArg = parser.value(iconOption);
+
+  const QStringList args = parser.positionalArguments();
+  if (args.size() != 1)
+  {
+    qCritical("Error: missing URL");
+    parser.showHelp(1);
+  }
+
+  const QUrl url = args.at(0);
+  if (!url.isValid() || url.scheme().size() == 0)
+  {
+    qCritical("Error: invalid URL format.");
+    exit(1);
+  }
 
   int defaultLoggingMode = LoggingMode::Console | LoggingMode::Journal;
 #ifdef QT_DEBUG
@@ -191,9 +205,6 @@ int main(int argc, char *argv[])
 #endif
 
   PTLogger::initialiseLogger(defaultLoggingMode, defaultLogLevel);
-
-  QStringList args = app.arguments();
-  qDebug() << args;
 
   QString configFilePath;
   if (isPi())
