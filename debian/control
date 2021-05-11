@@ -14,7 +14,7 @@ Standards-Version: 4.5.1
 Homepage: https://pi-top.com/
 
 Package: web-renderer
-Architecture: any
+Architecture: armhf
 Depends:
  ${misc:Depends},
  ${shlibs:Depends},
