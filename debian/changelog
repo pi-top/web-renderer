@@ -1,3 +1,17 @@
+web-renderer (4.0.1) buster; urgency=medium
+
+  [ Mike Roberts ]
+  * Update README (#19)
+  * Fix bracket
+  * Add hardening+=all (#20)
+  * pt-web-ui --> web-renderer
+  * pt-web-ui --> web-renderer
+
+  [ Jorge Capona ]
+  * Support command line arguments to customize application (#22)
+
+ -- pi-top <deb-maintainers@pi-top.com>  Thu, 13 May 2021 18:14:09 +0000
+
 web-renderer (4.0.0) buster; urgency=medium
 
   * Rename package
