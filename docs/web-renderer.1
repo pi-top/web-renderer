@@ -1,0 +1,51 @@
+.TH "WEB-RENDERER" 1
+.SH NAME
+web-renderer \- present web content in a native-looking window
+
+.SH SYNOPSIS
+web-renderer [options] url
+
+.SH DESCRIPTION
+Application that presents web content in a native window.
+The application will start in fullscreen mode by default.
+
+.SH OPTIONS
+
+.TP
+.B -k, --kiosk
+Start in kiosk mode. In this mode, the application will start in fullscreen with minimal UI. It will prevent the user from quitting or performing any interaction outside of usage of the application
+
+.TP
+.B -s, --size <size>
+Window size relative to screen, expressed as '<width_scalar>x<height_scalar>' (e.g. '0.6x0.4'), where each scalar is a decimal number from 0 to 1.
+
+.TP
+.B -t, --window-title <title>
+Specify a title for the window. This will appear in the title bar.
+
+.TP
+.B -i, --icon <path>
+Specify the path to an icon to be set as the application icon. This will appear in the title bar (unless the '--hide-frame' option is selected), and in the application bar.
+
+.TP
+.B --hide-frame
+Hide the frame (title bar and border) of the window. This means there will be no 'close', 'minimize' and 'maximize' buttons. Without this, the user cannot move or resize the window via the window system.
+
+.TP
+.B -h, --help
+Show a help message and exits.
+
+.SH EXAMPLE
+
+.TP
+.B Open Google in a window
+$ web-renderer --window-title "Google" --size 0.7x0.8 http://www.google.com
+
+.TP
+.B Open a local server in kiosk mode
+$ web-renderer --window-title "My Local Server" --kiosk http://localhost:3000
+
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+pi-top (deb-maintainers@pi-top.com)
