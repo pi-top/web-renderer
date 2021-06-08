@@ -1,6 +1,5 @@
 web-renderer (4.0.2) buster; urgency=medium
 
-  [ Jorge Capona ]
   * Don't conflict with pt-web-ui
 
  -- pi-top <deb-maintainers@pi-top.com>  Mon, 07 Jun 2021 19:24:39 +0000
