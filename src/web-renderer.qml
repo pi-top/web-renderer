@@ -31,6 +31,12 @@ ApplicationWindow {
       request.accepted = true
     }
 
+    onLoadingChanged: {
+        if (loadRequest.status == WebEngineView.LoadFailedStatus) {
+          reload();
+        }
+    }
+
     profile: WebEngineProfile {
       httpCacheType: WebEngineProfile.NoCache
       httpUserAgent: "web-renderer"
