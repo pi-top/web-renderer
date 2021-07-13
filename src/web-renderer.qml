@@ -13,6 +13,7 @@ ApplicationWindow {
   width: -1
   height: -1
   property string url: ""
+  property bool logLoadingError: false
 
   property bool initialised: false
   signal logMessage(int level, string message, int lineNumber, string sourceID)
@@ -29,6 +30,18 @@ ApplicationWindow {
 
     onContextMenuRequested: {
       request.accepted = true
+    }
+
+    onLoadingChanged: {
+      if (loadRequest.status == WebEngineView.LoadFailedStatus) {
+        if (logLoadingError == false) {
+          logLoadingError = true
+          console.error("Couldn't load page, reloading...");
+        }
+        reload();
+      } else {
+        logLoadingError = false
+      }
     }
 
     profile: WebEngineProfile {
