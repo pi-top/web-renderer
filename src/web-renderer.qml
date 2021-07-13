@@ -32,7 +32,7 @@ ApplicationWindow {
     }
 
     onLoadingChanged: {
-      if (loadRequest.status != WebEngineView.LoadFailedStatus) {
+      if (loadRequest.status == WebEngineView.LoadFailedStatus) {
         reload();
       }
     }
