@@ -33,7 +33,7 @@ ApplicationWindow {
     }
 
     onLoadingChanged: {
-      if (loadRequest.status != WebEngineView.LoadFailedStatus) {
+      if (loadRequest.status == WebEngineView.LoadFailedStatus) {
         if (log_loading_error == false) {
           log_loading_error = true
           console.error("Couldn't load page, reloading...");
