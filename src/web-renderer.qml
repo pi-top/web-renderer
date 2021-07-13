@@ -13,7 +13,7 @@ ApplicationWindow {
   width: -1
   height: -1
   property string url: ""
-  property bool log_loading_error: false
+  property bool logLoadingError: false
 
   property bool initialised: false
   signal logMessage(int level, string message, int lineNumber, string sourceID)
@@ -34,13 +34,13 @@ ApplicationWindow {
 
     onLoadingChanged: {
       if (loadRequest.status == WebEngineView.LoadFailedStatus) {
-        if (log_loading_error == false) {
-          log_loading_error = true
+        if (logLoadingError == false) {
+          logLoadingError = true
           console.error("Couldn't load page, reloading...");
         }
         reload();
       } else {
-        log_loading_error = false
+        logLoadingError = false
       }
     }
 
