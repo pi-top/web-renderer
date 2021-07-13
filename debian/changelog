@@ -1,4 +1,4 @@
-web-renderer (4.0.3) buster; urgency=medium
+web-renderer (4.1.0) buster; urgency=medium
 
   * Reload page if it fails to load
 
