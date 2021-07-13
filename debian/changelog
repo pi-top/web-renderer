@@ -1,3 +1,19 @@
+web-renderer (4.1.1) buster; urgency=medium
+
+  [ Mike Roberts ]
+  * Use 'multiarch/qemu-user-static:register'
+  * Use tonistiigi/binfmt
+  * Workflow: create draft release manually
+
+  [ Jorge Capona ]
+  * Reload page when it fails to load (#29)
+
+  [ github-actions[bot] ]
+  * [CI] Update debian/changelog for next release (#27)
+  * Use emulation when creating draft release
+
+ -- pi-top <deb-maintainers@pi-top.com>  Tue, 13 Jul 2021 22:02:34 +0000
+
 web-renderer (4.1.0) buster; urgency=medium
 
   * Reload page if it fails to load
