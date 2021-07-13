@@ -1,3 +1,9 @@
+web-renderer (4.1.0) buster; urgency=medium
+
+  * Reload page if it fails to load
+
+ -- pi-top <deb-maintainers@pi-top.com>  Tue, 13 Jul 2021 20:32:12 +0000
+
 web-renderer (4.0.2) buster; urgency=medium
 
   * Don't conflict with pt-web-ui
