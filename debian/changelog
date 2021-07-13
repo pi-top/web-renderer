@@ -1,12 +1,6 @@
 web-renderer (4.0.3) buster; urgency=medium
 
-  [ Mike Roberts ]
-  * Use 'multiarch/qemu-user-static:register'
-  * Use tonistiigi/binfmt
-  * Workflow: create draft release manually
-
-  [ Jorge Capona ]
-  * Reload page when it fails to load (#29)
+  * Reload page if it fails to load
 
  -- pi-top <deb-maintainers@pi-top.com>  Tue, 13 Jul 2021 20:32:12 +0000
 
