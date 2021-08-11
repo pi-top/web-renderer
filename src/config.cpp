@@ -76,15 +76,6 @@ QJsonValue Config::getValue(const QString& property)
   return content[property];
 }
 
-void Config::removeValue(const QString& property)
-{
-  TRACE_METHOD();
-
-  QJsonObject content = loadJson();
-  content.remove(property);
-  writeJsonObj(content);
-}
-
 int Config::getInt(const QString& property, int defaultValue)
 {
   TRACE_METHOD();
