@@ -1,9 +1,9 @@
 #include "oshelper.h"
 
 #ifndef __APPLE__
-#include "crypt.h"
+#include <crypt.h>
 
-#include "shadow.h"
+#include <shadow.h>
 #endif
 
 #include <QCoreApplication>
