@@ -14,8 +14,6 @@ class IConfig
   virtual void setValue(const QString& property, const QJsonValue& value) = 0;
   virtual QJsonValue getValue(const QString& property) = 0;
   virtual int getInt(const QString& property, int defaultValue) = 0;
-  virtual QString getString(const QString& property,
-                            const QString& defaultValue) = 0;
   virtual void removeValue(const QString& property) = 0;
 };
 
@@ -32,8 +30,6 @@ class Config : public QObject, public IConfig
   Q_INVOKABLE QJsonValue getValue(const QString& property) override;
   void removeValue(const QString& property) override;
   int getInt(const QString& property, int defaultValue) override;
-  QString getString(const QString& property,
-                    const QString& defaultValue) override;
 
  signals:
 

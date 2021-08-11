@@ -102,23 +102,6 @@ int Config::getInt(const QString& property, int defaultValue)
   return defaultValue;
 }
 
-QString Config::getString(const QString& property, const QString& defaultValue)
-{
-  TRACE_METHOD();
-
-  QJsonValue value = getValue(property);
-  if (value.isString())
-  {
-    return value.toString(defaultValue);
-  }
-  else
-  {
-    setValue(property, defaultValue);
-  }
-
-  return defaultValue;
-}
-
 QJsonObject Config::loadJson()
 {
   TRACE_METHOD();
