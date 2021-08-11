@@ -16,18 +16,6 @@ FileIO::FileIO(QObject* parent) : QObject(parent)
 {
 }
 
-void FileIO::createDirectory(const QString& filename)
-{
-  TRACE_METHOD();
-
-  QDir dir;
-
-  if (dir.exists(filename) == false)
-  {
-    dir.mkpath(filename);
-  }
-}
-
 void FileIO::deleteFile(const QString& filename)
 {
   TRACE_METHOD();

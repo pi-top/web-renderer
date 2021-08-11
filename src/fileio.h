@@ -7,7 +7,6 @@ class IFileIO
 {
  public:
   virtual ~IFileIO() = default;
-  virtual void createDirectory(const QString& filename) = 0;
   virtual void deleteFile(const QString& filename) = 0;
   virtual void writeFileText(const QString& filename, const QString& text) = 0;
   virtual void writeFileTextRaw(const QString& filename,
@@ -39,7 +38,6 @@ class FileIO : public QObject, public IFileIO
  public:
   explicit FileIO(QObject* parent = nullptr);
 
-  void createDirectory(const QString& filename) override;
   Q_INVOKABLE void deleteFile(const QString& filename) override;
   Q_INVOKABLE void writeFileText(const QString& filename,
                                  const QString& text) override;
