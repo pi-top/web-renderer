@@ -233,11 +233,6 @@ bool FileIO::directoryIsEmpty(const QString& directory)
               .count() == 0);
 }
 
-bool FileIO::copyFile(const QString& src, const QString& dst)
-{
-  return QFile::copy(src, dst);
-}
-
 bool FileIO::directoryExists(const QString& path)
 {
   QDir dir(path);
