@@ -109,28 +109,6 @@ void FileIO::writeFileBytes(const QString& filename, const QByteArray& text)
   }
 }
 
-void FileIO::appendFileText(const QString& filename, const QString& text)
-{
-  TRACE_METHOD();
-
-  appendFileTextInternal(filename, text);
-}
-
-void FileIO::appendFileTextInternal(const QString& filename,
-                                    const QString& text)
-{
-  // Used directly by logged to prevent logging every line when in trace mode
-
-  QFile file(filename);
-
-  if (file.open(QIODevice::Append))
-  {
-    QTextStream stream(&file);
-    stream << text << endl;
-    file.close();
-  }
-}
-
 void FileIO::moveFile(const QString& currentFilename,
                       const QString& newFilename)
 {
