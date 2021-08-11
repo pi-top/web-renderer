@@ -24,10 +24,6 @@ class IOSHelper
   virtual void runCommandDetached(const QString& command,
                                   const QStringList& args) = 0;
   virtual void runCommandDetached(const QString& command) = 0;
-  virtual QString getUserAnalyticsConfigPath() = 0;
-  virtual QString getLogPath() = 0;
-  virtual bool isSSHEnabled() = 0;
-  virtual bool sshPassAuthIsEnabled() = 0;
 };
 
 class OSHelper : public QObject, public IOSHelper
@@ -57,20 +53,9 @@ class OSHelper : public QObject, public IOSHelper
                                       const QStringList& args) override;
   Q_INVOKABLE void runCommandDetached(const QString& command) override;
   Q_INVOKABLE QString getTempDirectory() override;
-  Q_INVOKABLE QString getUserAnalyticsConfigPath() override;
-  Q_INVOKABLE QString getLogPath() override;
   Q_INVOKABLE QStringList getRunningProcessNames() override;
-  Q_INVOKABLE bool isSSHEnabled() override;
-  Q_INVOKABLE bool sshPassAuthIsEnabled() override;
-
-  Q_INVOKABLE static QString nameOfCoderPackage();
-  Q_INVOKABLE static QString getCoderConfigPath();
-  Q_INVOKABLE static QString getCoderSharedResourcesPath();
-  Q_INVOKABLE static QString getSystemConfigurationPath();
-  Q_INVOKABLE static QString getUserPiTopConfigPath();
 
  private:
-  void touchFile(const QString& filename);
   static QString getOS();
 };
 

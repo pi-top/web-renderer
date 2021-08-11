@@ -70,38 +70,6 @@ QStringList FileIO::directoryContents(const QString& directoryPath,
   return dir.entryList(filterList);
 }
 
-void FileIO::touchFile(const QString& filename)
-{
-  TRACE_METHOD();
-
-  QFile file(filename);
-  if (file.exists() == false)
-  {
-    // Create empty file
-    if (file.open(QIODevice::ReadWrite))
-    {
-      file.write("");
-      file.close();
-    }
-  }
-}
-
-QStringList FileIO::readFile(const QString& filename)
-{
-  QFile file(filename);
-  QStringList strings;
-  if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-  {
-    QTextStream in(&file);
-    while (in.atEnd() == false)
-    {
-      strings += in.readLine();
-    }
-    file.close();
-  }
-  return strings;
-}
-
 QByteArray FileIO::readFileToByteArray(const QString& filename)
 {
   TRACE_METHOD();
