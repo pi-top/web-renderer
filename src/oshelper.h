@@ -52,7 +52,6 @@ class OSHelper : public QObject, public IOSHelper
 
                                       const QStringList& args) override;
   Q_INVOKABLE void runCommandDetached(const QString& command) override;
-  Q_INVOKABLE QString getTempDirectory() override;
 
  private:
   static QString getOS();
