@@ -310,14 +310,10 @@ QString OSHelper::getUserPiTopConfigPath()
 
 QString OSHelper::getCoderConfigPath()
 {
-  QString configDirStr = QStringLiteral("");
+  QString configDirStr = getUserPiTopConfigPath() + nameOfCoderPackage() + "/";
   if (getOS() == QStringLiteral("Mac"))
   {
     configDirStr = QCoreApplication::applicationDirPath() + "/";
-  }
-  else
-  {
-    configDirStr = getUserPiTopConfigPath() + nameOfCoderPackage() + "/";
   }
 
   QDir configDir(configDirStr);
@@ -330,14 +326,10 @@ QString OSHelper::getCoderConfigPath()
 
 QString OSHelper::getUserAnalyticsConfigPath()
 {
-  QString configDirStr = QStringLiteral("");
+  QString configDirStr = getUserPiTopConfigPath() + "pt-analytics/";
   if (getOS() == QStringLiteral("Mac"))
   {
     configDirStr = QCoreApplication::applicationDirPath() + "/";
-  }
-  else
-  {
-    configDirStr = getUserPiTopConfigPath() + "pt-analytics/";
   }
 
   QDir configDir(configDirStr);
