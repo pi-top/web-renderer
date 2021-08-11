@@ -97,17 +97,6 @@ void FileIO::writeFileBytes(const QString& filename, const QByteArray& text)
   }
 }
 
-void FileIO::moveFile(const QString& currentFilename,
-                      const QString& newFilename)
-{
-  TRACE_METHOD();
-
-  if (QFile::copy(currentFilename, newFilename))
-  {
-    deleteFile(currentFilename);
-  }
-}
-
 bool FileIO::fileExists(const QString& filename)
 {
   TRACE_METHOD();

@@ -15,8 +15,6 @@ class IFileIO
                               const QStringList& textLines) = 0;
   virtual void writeFileBytes(const QString& filename,
                               const QByteArray& text) = 0;
-  virtual void moveFile(const QString& currentFilename,
-                        const QString& newFilename) = 0;
   virtual QStringList readFile(const QString& filename) = 0;
   virtual QByteArray readFileToByteArray(const QString& filename) = 0;
   virtual QString readFileToString(const QString& filename) = 0;
@@ -45,8 +43,6 @@ class FileIO : public QObject, public IFileIO
                                   const QStringList& textLines) override;
   Q_INVOKABLE void writeFileBytes(const QString& filename,
                                   const QByteArray& text) override;
-  Q_INVOKABLE void moveFile(const QString& currentFilename,
-                            const QString& newFilename) override;
   Q_INVOKABLE QStringList readFile(const QString& filename) override;
   Q_INVOKABLE QByteArray readFileToByteArray(const QString& filename) override;
   Q_INVOKABLE QString readFileToString(const QString& filename) override;
