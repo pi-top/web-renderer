@@ -83,20 +83,6 @@ void FileIO::writeFileLines(const QString& filename,
   }
 }
 
-void FileIO::writeFileBytes(const QString& filename, const QByteArray& text)
-{
-  TRACE_METHOD();
-
-  deleteFile(filename);
-  QFile file(filename);
-
-  if (file.open(QIODevice::ReadWrite))
-  {
-    file.write(text);
-    file.close();
-  }
-}
-
 bool FileIO::fileExists(const QString& filename)
 {
   TRACE_METHOD();

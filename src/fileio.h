@@ -13,8 +13,6 @@ class IFileIO
                                 const QString& text) = 0;
   virtual void writeFileLines(const QString& filename,
                               const QStringList& textLines) = 0;
-  virtual void writeFileBytes(const QString& filename,
-                              const QByteArray& text) = 0;
   virtual QStringList readFile(const QString& filename) = 0;
   virtual QByteArray readFileToByteArray(const QString& filename) = 0;
   virtual bool fileExists(const QString& filename) = 0;
@@ -40,8 +38,6 @@ class FileIO : public QObject, public IFileIO
                                     const QString& text) override;
   Q_INVOKABLE void writeFileLines(const QString& filename,
                                   const QStringList& textLines) override;
-  Q_INVOKABLE void writeFileBytes(const QString& filename,
-                                  const QByteArray& text) override;
   Q_INVOKABLE QStringList readFile(const QString& filename) override;
   Q_INVOKABLE QByteArray readFileToByteArray(const QString& filename) override;
   Q_INVOKABLE bool fileExists(const QString& filename) override;
