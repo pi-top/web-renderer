@@ -17,7 +17,6 @@ class IFileIO
                               const QByteArray& text) = 0;
   virtual QStringList readFile(const QString& filename) = 0;
   virtual QByteArray readFileToByteArray(const QString& filename) = 0;
-  virtual QString readFileToString(const QString& filename) = 0;
   virtual bool fileExists(const QString& filename) = 0;
   virtual QStringList directoryContents(const QString& directoryPath,
                                         const QString& filter) = 0;
@@ -45,7 +44,6 @@ class FileIO : public QObject, public IFileIO
                                   const QByteArray& text) override;
   Q_INVOKABLE QStringList readFile(const QString& filename) override;
   Q_INVOKABLE QByteArray readFileToByteArray(const QString& filename) override;
-  Q_INVOKABLE QString readFileToString(const QString& filename) override;
   Q_INVOKABLE bool fileExists(const QString& filename) override;
   Q_INVOKABLE QStringList directoryContents(const QString& directoryPath,
                                             const QString& filter) override;

@@ -169,14 +169,6 @@ QByteArray FileIO::readFileToByteArray(const QString& filename)
   return byteArray;
 }
 
-QString FileIO::readFileToString(const QString& filename)
-{
-  TRACE_METHOD();
-
-  QStringList strings = readFile(filename);
-  return strings.join(QStringLiteral("\n"));
-}
-
 void FileIO::copyPath(const QString& src, const QString& dst)
 {
   TRACE_METHOD();
