@@ -87,10 +87,9 @@ int runCommand(const QString &command, const QStringList &args, int timeout,
 void waitForServerResponse(const QUrl url)
 {
   qInfo() << "Waiting for backend web server response...";
-  bool serverIsUp = false;
   int counter = 0;
   int counterMax = 30;
-  while (serverIsUp == false)
+  while (true)
   {
     if (counter >= counterMax)
     {
