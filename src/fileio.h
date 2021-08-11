@@ -27,7 +27,6 @@ class IFileIO
                                         const QStringList& filterList) = 0;
   virtual void touchFile(const QString& filename) = 0;
   virtual void copyPath(const QString& src, const QString& dst) = 0;
-  virtual bool directoryIsEmpty(const QString& directory) = 0;
 };
 
 class FileIO : public QObject, public IFileIO
@@ -58,7 +57,6 @@ class FileIO : public QObject, public IFileIO
       const QString& directoryPath, const QStringList& filterList) override;
   Q_INVOKABLE void touchFile(const QString& filename) override;
   Q_INVOKABLE void copyPath(const QString& src, const QString& dst) override;
-  Q_INVOKABLE bool directoryIsEmpty(const QString& directory) override;
 };
 
 #endif  // FILEIO_H

@@ -211,12 +211,3 @@ void FileIO::copyPath(const QString& src, const QString& dst)
     QFile::copy(src + QDir::separator() + f, dst + QDir::separator() + f);
   }
 }
-
-bool FileIO::directoryIsEmpty(const QString& directory)
-{
-  TRACE_METHOD();
-
-  return (QDir(directory)
-              .entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries)
-              .count() == 0);
-}
