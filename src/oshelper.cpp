@@ -366,14 +366,10 @@ QString OSHelper::getSplashscreenHelperFilesPath()
 
 QString OSHelper::getUserPiTopConfigPath()
 {
-  QString configDirStr = QStringLiteral("");
+  QString configDirStr = QStringLiteral("/home/pi/.config/pi-top/");
   if (getOS() == QStringLiteral("Mac"))
   {
     configDirStr = QCoreApplication::applicationDirPath() + "/";
-  }
-  else
-  {
-    configDirStr = QStringLiteral("/home/pi/.config/pi-top/");
   }
 
   QDir configDir(configDirStr);
@@ -465,14 +461,10 @@ void OSHelper::touchFile(const QString& filename)
 
 QString OSHelper::getCachedWorksheetsPath()
 {
-  QString cacheDirStr = QStringLiteral("");
+  QString cacheDirStr = getCoderConfigPath() + "worksheets/";
   if (getOS() == QStringLiteral("Mac"))
   {
     cacheDirStr = QCoreApplication::applicationDirPath() + "/worksheets/";
-  }
-  else
-  {
-    cacheDirStr = getCoderConfigPath() + "worksheets/";
   }
 
   QDir cacheDir(cacheDirStr);
@@ -530,14 +522,10 @@ QString OSHelper::getLogFilePath()
 
 QString OSHelper::getWorksheetsWorkingDirectory()
 {
-  QString codeDirStr = QStringLiteral("");
+  QString codeDirStr = QStringLiteral("/home/pi/pi-topCODER/");
   if (getOS() == QStringLiteral("Mac"))
   {
     codeDirStr = QCoreApplication::applicationDirPath() + "/pi-topCODER/";
-  }
-  else
-  {
-    codeDirStr = QStringLiteral("/home/pi/pi-topCODER/");
   }
 
   QDir codeDir(codeDirStr);
