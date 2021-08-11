@@ -160,24 +160,3 @@ void Config::writeJsonObj(const QJsonObject& jsonObj)
 
   m_fileIO->writeFileText(m_configFilePath, QJsonDocument(jsonObj).toJson());
 }
-
-QStringList Config::arrayValueToStringList(const QString& arrName)
-{
-  TRACE_METHOD();
-
-  QStringList strList;
-  QJsonValue arrVal = getValue(arrName);
-  if (arrVal.isArray())
-  {
-    QJsonArray arr = arrVal.toArray();
-    for (QJsonValueRef i : arr)
-    {
-      strList.append(i.toString());
-    }
-  }
-  else
-  {
-    qWarning() << "Unable to convert JSON array to StringList";
-  }
-  return strList;
-}

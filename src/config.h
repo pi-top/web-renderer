@@ -16,7 +16,6 @@ class IConfig
   virtual int getInt(const QString& property, int defaultValue) = 0;
   virtual QString getString(const QString& property,
                             const QString& defaultValue) = 0;
-  virtual QStringList arrayValueToStringList(const QString& arrName) = 0;
   virtual void removeValue(const QString& property) = 0;
 };
 
@@ -35,7 +34,6 @@ class Config : public QObject, public IConfig
   int getInt(const QString& property, int defaultValue) override;
   QString getString(const QString& property,
                     const QString& defaultValue) override;
-  QStringList arrayValueToStringList(const QString& arrName) override;
 
  signals:
 
