@@ -355,14 +355,10 @@ void OSHelper::touchFile(const QString& filename)
 
 QString OSHelper::getLogPath()
 {
-  QString cacheDirStr = QStringLiteral("");
+  QString cacheDirStr = QCoreApplication::applicationDirPath() + "/logs/";
   if (isPi())
   {
     cacheDirStr = getCoderConfigPath() + "logs/";
-  }
-  else
-  {
-    cacheDirStr = QCoreApplication::applicationDirPath() + "/logs/";
   }
 
   QDir cacheDir(cacheDirStr);
