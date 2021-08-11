@@ -9,8 +9,6 @@ class IFileIO
   virtual ~IFileIO() = default;
   virtual void deleteFile(const QString& filename) = 0;
   virtual void writeFileText(const QString& filename, const QString& text) = 0;
-  virtual void writeFileTextRaw(const QString& filename,
-                                const QString& text) = 0;
   virtual QStringList readFile(const QString& filename) = 0;
   virtual QByteArray readFileToByteArray(const QString& filename) = 0;
   virtual bool fileExists(const QString& filename) = 0;
@@ -31,9 +29,7 @@ class FileIO : public QObject, public IFileIO
 
   Q_INVOKABLE void deleteFile(const QString& filename) override;
   Q_INVOKABLE void writeFileText(const QString& filename,
-                                 const QString& text) override;
-  Q_INVOKABLE void writeFileTextRaw(const QString& filename,
-                                    const QString& text) override;
+                                 const QString& text) override;de;
   Q_INVOKABLE QStringList readFile(const QString& filename) override;
   Q_INVOKABLE QByteArray readFileToByteArray(const QString& filename) override;
   Q_INVOKABLE bool fileExists(const QString& filename) override;

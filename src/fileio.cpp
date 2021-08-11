@@ -48,41 +48,6 @@ void FileIO::writeFileText(const QString& filename, const QString& text)
   }
 }
 
-void FileIO::writeFileTextRaw(const QString& filename, const QString& text)
-{
-  TRACE_METHOD();
-
-  deleteFile(filename);
-  QFile file(filename);
-
-  if (file.open(QIODevice::ReadWrite))
-  {
-    QTextStream stream(&file);
-    stream << text;
-    file.close();
-  }
-}
-
-void FileIO::writeFileLines(const QString& filename,
-                            const QStringList& textLines)
-{
-  TRACE_METHOD();
-
-  deleteFile(filename);
-  QFile file(filename);
-
-  if (file.open(QIODevice::ReadWrite))
-  {
-    QTextStream stream(&file);
-    foreach (const QString& line, textLines)
-    {
-      stream << line << endl;
-    }
-
-    file.close();
-  }
-}
-
 bool FileIO::fileExists(const QString& filename)
 {
   TRACE_METHOD();
