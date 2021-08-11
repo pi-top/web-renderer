@@ -220,9 +220,3 @@ bool FileIO::directoryIsEmpty(const QString& directory)
               .entryInfoList(QDir::NoDotAndDotDot | QDir::AllEntries)
               .count() == 0);
 }
-
-bool FileIO::directoryExists(const QString& path)
-{
-  QDir dir(path);
-  return dir.exists();
-}
