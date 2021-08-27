@@ -76,15 +76,6 @@ QJsonValue Config::getValue(const QString& property)
   return content[property];
 }
 
-void Config::removeValue(const QString& property)
-{
-  TRACE_METHOD();
-
-  QJsonObject content = loadJson();
-  content.remove(property);
-  writeJsonObj(content);
-}
-
 int Config::getInt(const QString& property, int defaultValue)
 {
   TRACE_METHOD();
@@ -93,23 +84,6 @@ int Config::getInt(const QString& property, int defaultValue)
   if (value.isDouble())
   {
     return value.toInt(defaultValue);
-  }
-  else
-  {
-    setValue(property, defaultValue);
-  }
-
-  return defaultValue;
-}
-
-QString Config::getString(const QString& property, const QString& defaultValue)
-{
-  TRACE_METHOD();
-
-  QJsonValue value = getValue(property);
-  if (value.isString())
-  {
-    return value.toString(defaultValue);
   }
   else
   {
@@ -159,25 +133,4 @@ void Config::writeJsonObj(const QJsonObject& jsonObj)
   TRACE_METHOD();
 
   m_fileIO->writeFileText(m_configFilePath, QJsonDocument(jsonObj).toJson());
-}
-
-QStringList Config::arrayValueToStringList(const QString& arrName)
-{
-  TRACE_METHOD();
-
-  QStringList strList;
-  QJsonValue arrVal = getValue(arrName);
-  if (arrVal.isArray())
-  {
-    QJsonArray arr = arrVal.toArray();
-    for (QJsonValueRef i : arr)
-    {
-      strList.append(i.toString());
-    }
-  }
-  else
-  {
-    qWarning() << "Unable to convert JSON array to StringList";
-  }
-  return strList;
 }
