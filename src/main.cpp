@@ -271,7 +271,7 @@ int main(int argc, char *argv[])
     app.setApplicationName(titleArg);
     rootObject->setProperty("title", titleArg);
   }
-  
+
   const QSize &screenSize = app.primaryScreen()->size();
   if (kioskModeArg)
   {
