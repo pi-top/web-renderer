@@ -1,3 +1,11 @@
+web-renderer (4.1.1) bullseye; urgency=medium
+
+  * Drop unused Lintian override
+  * Bullseye release (#35)
+  * Update master workflow files
+
+ -- pi-top <deb-maintainers@pi-top.com>  Wed, 01 Sep 2021 20:48:28 +0000
+
 web-renderer (4.1.0) buster; urgency=medium
 
   * Reload page if it fails to load
