@@ -1,16 +1,8 @@
-web-renderer (4.1.1) buster; urgency=medium
+web-renderer (4.1.1) bullseye; urgency=medium
 
-  * Update workflows (#32)
   * Drop unused Lintian override
-  * [pre-commit.ci] pre-commit autoupdate (#31)
-  * Update workflow files
-  * Rename workflow files
-  * Update Debian build workflow files
-  * Update master workflow files
-  * Update master workflow files
   * Bullseye release (#35)
-  * Updated master workflow files
-  * Updated master workflow files
+  * Update master workflow files
 
  -- pi-top <deb-maintainers@pi-top.com>  Wed, 01 Sep 2021 20:48:28 +0000
 
