@@ -1,3 +1,1 @@
 bin/web-renderer                               /usr/bin/
-src/web-renderer.json                          /usr/lib/web-renderer/
-src/web-renderer.qml                           /usr/lib/web-renderer/
