@@ -1,6 +1,6 @@
 #include <QWebEnginePage>
 #include "console_log_handler.h"
-#include "ptlogger.h"
+#include "logger.h"
 
 ConsoleLogHandler::ConsoleLogHandler(QObject *parent) :
     QObject(parent)
@@ -15,18 +15,18 @@ void ConsoleLogHandler::handleLog(int level, QString message, int lineNumber, QS
     {
         case QWebEnginePage::InfoMessageLevel:
             // qInfo().noquote() << msg;
-            PTLogger::info(msg);
+            Logger::info(msg);
             break;
         case QWebEnginePage::WarningMessageLevel:
             // qWarning().noquote() << msg;
-            PTLogger::warning(msg);
+            Logger::warning(msg);
             break;
         case QWebEnginePage::ErrorMessageLevel:
             // qCritical().noquote() << msg;
-            PTLogger::error(msg);
+            Logger::error(msg);
             break;
         default:
             // qDebug().noquote() << msg;
-            PTLogger::debug(msg);
+            Logger::debug(msg);
     }
 }
