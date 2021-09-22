@@ -8,8 +8,7 @@
 #include <QUrl>
 
 #include "console_log_handler.h"
-#include "fileio.h"
-#include "ptlogger.h"
+#include "logger.h"
 #include "unix_signal_manager.h"
 
 bool isPi()
@@ -113,14 +112,14 @@ int main(int argc, char *argv[])
   int defaultLogLevel = LOG_INFO;
 #endif
 
-  PTLogger::initialiseLogger(defaultLoggingMode, defaultLogLevel);
+  Logger::initialiseLogger(defaultLoggingMode, defaultLogLevel);
 
   // TODO: add as argument
   //
   // if (logLevel != defaultLogLevel)
   // {
   //   qInfo().noquote() << "Logging level set to" << logLevel;
-  //   PTLogger::setLevel(logLevel);
+  //   Logger::setLevel(logLevel);
   // }
 
   // Suppress "qt5ct: using qt5ct plugin" stdout output

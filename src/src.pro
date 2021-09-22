@@ -24,15 +24,11 @@ macx:OBJECTS_DIR = ../build/o/mac
 
 SOURCES += main.cpp \
     console_log_handler.cpp \
-    fileio.cpp \
-    oshelper.cpp \
-    ptlogger.cpp
+    logger.cpp
 
 HEADERS += unix_signal_manager.h \
     console_log_handler.h \
-    fileio.h \
-    oshelper.h \
-    ptlogger.h
+    logger.h
 
 LIBS += -lcrypt
 

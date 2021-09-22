@@ -1,4 +1,4 @@
-#include "ptlogger.h"
+#include "logger.h"
 
 // "Static" instances of these variables, used with extern
 // elsewhere to reference these instances.

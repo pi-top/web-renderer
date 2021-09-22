@@ -1,5 +1,5 @@
-#ifndef PTLOGGER_H
-#define PTLOGGER_H
+#ifndef LOGGER_H
+#define LOGGER_H
 
 #include <syslog.h>
 #include <QCoreApplication>
@@ -34,15 +34,17 @@ enum TerminalColor : int
   TC_White = 8
 };
 
-// Defined in ptlogger.cpp in the ptcommon lib. Externed here
+// Defined in logger.cpp. Externed here
 // to make sure the same instance is used in all callees in the
 // process
+
+// Note: ^ likely no longer relevant
 
 extern QList<int64_t> g_threadIdTable;
 extern int g_loggingMode;
 extern int g_loggingLevel;
 
-class PTLogger
+class Logger
 {
  public:
   static inline void initialiseLogger(int mode, int level = LOG_DEBUG)
@@ -308,7 +310,7 @@ class PTLogger
          (color == TerminalColor::TC_White) |
          (color == TerminalColor::TC_Default));
 
-    Q_ASSERT_X(assertTest, "PTLogger::getColorAnsiCode",
+    Q_ASSERT_X(assertTest, "Logger::getColorAnsiCode",
                QStringLiteral("Invalid value - colour not found")
                    .toStdString()
                    .c_str());
@@ -338,6 +340,6 @@ class PTLogger
   }
 };
 
-#define TRACE_METHOD() PTLogger::traceMethod(__PRETTY_FUNCTION__)
+#define TRACE_METHOD() Logger::traceMethod(__PRETTY_FUNCTION__)
 
-#endif  // PTLOGGER_H
+#endif  // LOGGER_H
