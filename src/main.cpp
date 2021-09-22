@@ -105,14 +105,6 @@ int main(int argc, char *argv[])
 
   Logger::initialiseLogger(defaultLoggingMode, defaultLogLevel);
 
-  // TODO: add as argument
-  //
-  // if (logLevel != defaultLogLevel)
-  // {
-  //   qInfo().noquote() << "Logging level set to" << logLevel;
-  //   Logger::setLevel(logLevel);
-  // }
-
   // Suppress "qt5ct: using qt5ct plugin" stdout output
   qputenv("QT_LOGGING_RULES", "qt5ct.debug=false");
 
