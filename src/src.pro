@@ -23,14 +23,12 @@ win32:OBJECTS_DIR = ../build/o/win32
 macx:OBJECTS_DIR = ../build/o/mac
 
 SOURCES += main.cpp \
-    config.cpp \
     console_log_handler.cpp \
     fileio.cpp \
     oshelper.cpp \
     ptlogger.cpp
 
 HEADERS += unix_signal_manager.h \
-    config.h \
     console_log_handler.h \
     fileio.h \
     oshelper.h \
