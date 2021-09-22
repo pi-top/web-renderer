@@ -126,6 +126,15 @@ int main(int argc, char *argv[])
   // Suppress "qt5ct: using qt5ct plugin" stdout output
   qputenv("QT_LOGGING_RULES", "qt5ct.debug=false");
 
+  ////////////////////
+  // Handle logging //
+  ////////////////////
+  QQuickWindow *window = qobject_cast<QQuickWindow *>(rootObject);
+  ConsoleLogHandler consoleLogHandler;
+  QObject::connect(window, SIGNAL(logMessage(int, QString, int, QString)),
+                   &consoleLogHandler,
+                   SLOT(handleLog(int, QString, int, QString)));
+
   ////////
   // UI //
   ////////
@@ -181,15 +190,6 @@ int main(int argc, char *argv[])
   ////////////////////
   UnixSignalManager::catchUnixSignals(
       {SIGHUP, SIGINT, SIGQUIT, SIGTERM, SIGTSTP});
-
-  ////////////////////
-  // Handle logging //
-  ////////////////////
-  QQuickWindow *window = qobject_cast<QQuickWindow *>(rootObject);
-  ConsoleLogHandler consoleLogHandler;
-  QObject::connect(window, SIGNAL(logMessage(int, QString, int, QString)),
-                   &consoleLogHandler,
-                   SLOT(handleLog(int, QString, int, QString)));
 
   ///////////////
   // MAIN LOOP //
