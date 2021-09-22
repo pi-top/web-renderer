@@ -125,18 +125,9 @@ int main(int argc, char *argv[])
   // Suppress "qt5ct: using qt5ct plugin" stdout output
   qputenv("QT_LOGGING_RULES", "qt5ct.debug=false");
 
-  ////////////////////
-  // Handle logging //
-  ////////////////////
-  QQuickWindow *window = qobject_cast<QQuickWindow *>(rootObject);
-  ConsoleLogHandler consoleLogHandler;
-  QObject::connect(window, SIGNAL(logMessage(int, QString, int, QString)),
-                   &consoleLogHandler,
-                   SLOT(handleLog(int, QString, int, QString)));
-
-  ////////
-  // UI //
-  ////////
+  //////////////
+  // Frontend //
+  //////////////
   qInfo() << "Loading QML";
   QQmlApplicationEngine engine;
   if (isPi())
@@ -154,6 +145,18 @@ int main(int argc, char *argv[])
   }
   QObject *rootObject = engine.rootObjects().constFirst();
 
+  ////////////////////
+  // Handle logging //
+  ////////////////////
+  QQuickWindow *window = qobject_cast<QQuickWindow *>(rootObject);
+  ConsoleLogHandler consoleLogHandler;
+  QObject::connect(window, SIGNAL(logMessage(int, QString, int, QString)),
+                   &consoleLogHandler,
+                   SLOT(handleLog(int, QString, int, QString)));
+
+  ////////
+  // UI //
+  ////////
   qInfo() << "Configuring view";
 
   app.setApplicationName(titleArg);
