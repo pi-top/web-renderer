@@ -11,15 +11,6 @@
 #include "logger.h"
 #include "unix_signal_manager.h"
 
-bool isPi()
-{
-#ifdef __arm__
-  return true;
-#else
-  return false;
-#endif
-}
-
 void parseSizeArgument(QString sizeStr, float &width, float &height)
 {
   QRegExp rx("x");
@@ -130,14 +121,7 @@ int main(int argc, char *argv[])
   //////////////
   qInfo() << "Loading QML";
   QQmlApplicationEngine engine;
-  if (isPi())
-  {
-    engine.load(QUrl(QStringLiteral("/usr/lib/web-renderer/web-renderer.qml")));
-  }
-  else
-  {
-    engine.load(QUrl(QStringLiteral("qrc:/web-renderer.qml")));
-  }
+  engine.load(QUrl(QStringLiteral("qrc:/web-renderer.qml")));
 
   if (engine.rootObjects().isEmpty())
   {

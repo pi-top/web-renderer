@@ -34,10 +34,6 @@ LIBS += -lcrypt
 
 
 RESOURCES += qml.qrc
-linux:contains(QMAKE_HOST.arch, arm.*) {
-    # Leave out QRC to fetch from /usr/lib/web-renderer/ on Pi
-    RESOURCES -= qml.qrc
-}
 
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /usr/bin
