@@ -1,3 +1,9 @@
+web-renderer (5.0.0-1) bullseye; urgency=medium
+
+  * Make web-renderer backend-agnostic (#39)
+
+ -- pi-top <deb-maintainers@pi-top.com>  Wed, 22 Sep 2021 18:24:55 +0000
+
 web-renderer (4.1.1-1) bullseye; urgency=medium
 
   * Drop unused Lintian override
