@@ -1,8 +1,6 @@
-web-renderer (4.1.1-2) bullseye; urgency=medium
+web-renderer (5.0.0-1) bullseye; urgency=medium
 
-  * Updated master workflow files
-  * Updated master workflow files
-  * Backend-agnostic (#39)
+  * Make web-renderer backend-agnostic (#39)
 
  -- pi-top <deb-maintainers@pi-top.com>  Wed, 22 Sep 2021 18:24:55 +0000
 
