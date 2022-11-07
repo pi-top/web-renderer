@@ -47,7 +47,7 @@ jobs:
         run: |
           target_architecture=amd64
           if grep '^Architecture:' debian/control | grep -q -v 'all'; then
-            target_architecture=armhf
+            target_architecture=arm64
           fi
           echo "TARGET_ARCHITECTURE=${target_architecture}" >> $GITHUB_ENV
 
