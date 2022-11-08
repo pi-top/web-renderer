@@ -11,9 +11,9 @@ on:
 
 
 env:
-  DEB_BUILD_DOCKER_IMAGE: "vizulize/pi-top-os-deb-build"
+  DEB_BUILD_DOCKER_IMAGE: "vizulize/m-roberts-os-deb-build"
   DEB_BUILD_DOCKER_TAG: "latest"
-  PACKAGECLOUD_REPO: "pi-top-os-unstable"
+  PACKAGECLOUD_REPO: "m-roberts-os-unstable"
   OS: "debian"
   DISTRO: "bullseye"
 
@@ -47,7 +47,7 @@ jobs:
 
       - name: Determine architecture to use from package info
         # If architecture is 'all', then it can be compiled on host architecture
-        # All other pi-topOS cases require 'armhf'
+        # All other m-robertsOS cases require 'armhf'
         run: |
           target_architecture=amd64
           if grep '^Architecture:' debian/control | grep -q -v 'all'; then
@@ -56,7 +56,7 @@ jobs:
           echo "TARGET_ARCHITECTURE=${target_architecture}" >> $GITHUB_ENV
 
       - name: Build Debian package
-        uses: pi-top/debian-package-build-action@master
+        uses: m-roberts/debian-package-build-action@master
         with:
           target_architecture: ${{ env.TARGET_ARCHITECTURE }}
           docker_image: ${{ env.DEB_BUILD_DOCKER_IMAGE }}:${{ env.DEB_BUILD_DOCKER_TAG }}
@@ -74,7 +74,7 @@ jobs:
           name: "dsc"
           path: "./artifacts"
 
-      - uses: pi-top/ghaction-packagecloud@main
+      - uses: m-roberts/ghaction-packagecloud@main
         with:
           repository: ${{ env.PACKAGECLOUD_REPO }}/${{ env.OS }}/${{ env.DISTRO }}
           files: |

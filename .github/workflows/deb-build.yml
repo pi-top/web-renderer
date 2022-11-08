@@ -10,10 +10,10 @@ on:
   workflow_dispatch:
 
 env:
-  DEB_BUILD_DOCKER_IMAGE: "vizulize/pi-top-os-deb-build"
+  DEB_BUILD_DOCKER_IMAGE: "vizulize/m-roberts-os-deb-build"
   DEB_BUILD_DOCKER_TAG: "latest"
-  CHANGELOG_AUTHOR_NAME: "pi-top"
-  CHANGELOG_AUTHOR_EMAIL: "deb-maintainers@pi-top.com"
+  CHANGELOG_AUTHOR_NAME: "m-roberts"
+  CHANGELOG_AUTHOR_EMAIL: "deb-maintainers@m-roberts.com"
   PACKAGECLOUD_REPO: "experimental"
   OS: "debian"
   DISTRO: "bullseye"
@@ -31,7 +31,7 @@ jobs:
         uses: docker://lpenz/ghaction-version-gen:0.3
 
       - name: Add changelog entry for latest snapshot version
-        uses: pi-top/git-debian-changelog-bump-action@master
+        uses: m-roberts/git-debian-changelog-bump-action@master
         with:
           release: false
           author_name: ${{ env.CHANGELOG_AUTHOR_NAME }}
@@ -43,7 +43,7 @@ jobs:
       # using a strategy matrix if additional builds (e.g. `arm64`) are desired
       - name: Determine architecture to use from package info
         # If architecture is 'all', then it can be compiled on host architecture
-        # All other pi-topOS cases require 'armhf'
+        # All other m-robertsOS cases require 'armhf'
         run: |
           target_architecture=amd64
           if grep '^Architecture:' debian/control | grep -q -v 'all'; then
@@ -52,9 +52,9 @@ jobs:
           echo "TARGET_ARCHITECTURE=${target_architecture}" >> $GITHUB_ENV
 
       - name: Build Debian package
-        uses: pi-top/debian-package-build-action@master
+        uses: m-roberts/debian-package-build-action@master
         with:
-          # https://github.com/pi-top/debian-package-build-action/pull/19
+          # https://github.com/m-roberts/debian-package-build-action/pull/19
           # lintian_check_changelog_spelling: false
           target_architecture: ${{ env.TARGET_ARCHITECTURE }}
           docker_image: ${{ env.DEB_BUILD_DOCKER_IMAGE }}:${{ env.DEB_BUILD_DOCKER_TAG }}
@@ -91,7 +91,7 @@ jobs:
             !./artifacts/*.deb
             !./artifacts/*.tar.xz
 
-      - uses: pi-top/ghaction-packagecloud@main
+      - uses: m-roberts/ghaction-packagecloud@main
         if: github.ref == 'refs/heads/master'
         with:
           repository: ${{ env.PACKAGECLOUD_REPO }}/${{ env.OS }}/${{ env.DISTRO }}
