@@ -52,7 +52,7 @@ jobs:
           echo "TARGET_ARCHITECTURE=${target_architecture}" >> $GITHUB_ENV
 
       - name: Build Debian package
-        uses: m-roberts/debian-package-build-action@master
+        uses: m-roberts/debian-package-build-action@support-arm-64
         with:
           # https://github.com/m-roberts/debian-package-build-action/pull/19
           # lintian_check_changelog_spelling: false
