@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  DEB_BUILD_DOCKER_IMAGE: "vizulize/pi-top-os-deb-build"
+  DEB_BUILD_DOCKER_IMAGE: "pitop/pi-top-os-deb-build"
   DEB_BUILD_DOCKER_TAG: "latest"
   CHANGELOG_AUTHOR_NAME: "pi-top"
   CHANGELOG_AUTHOR_EMAIL: "deb-maintainers@pi-top.com"
@@ -54,7 +54,7 @@ jobs:
       - name: Build Debian package
         uses: m-roberts/debian-package-build-action@support-arm-64
         with:
-          # https://github.com/m-roberts/debian-package-build-action/pull/19
+          # https://github.com/pi-top/debian-package-build-action/pull/19
           # lintian_check_changelog_spelling: false
           target_architecture: ${{ env.TARGET_ARCHITECTURE }}
           docker_image: ${{ env.DEB_BUILD_DOCKER_IMAGE }}:${{ env.DEB_BUILD_DOCKER_TAG }}
