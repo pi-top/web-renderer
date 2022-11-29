@@ -1,3 +1,19 @@
+web-renderer (5.0.0-2) bullseye; urgency=medium
+
+  * Updated master workflow files
+  * [pre-commit.ci] pre-commit autoupdate (#42)
+  * Add signing key and passphrase to deb_release workflow
+  * Add pull request template
+  * Update PR template to track Github issues
+  * [pre-commit.ci] pre-commit autoupdate (#43)
+  * Updated master workflow files
+  * Updated master workflow files
+  * [pre-commit.ci] pre-commit autoupdate (#44)
+  * [pre-commit.ci] pre-commit autoupdate (#45)
+  * Add 64 bit builds (#48)
+
+ -- pi-top <deb-maintainers@pi-top.com>  Tue, 29 Nov 2022 21:48:22 +0000
+
 web-renderer (5.0.0-1) bullseye; urgency=medium
 
   * Make web-renderer backend-agnostic (#39)
