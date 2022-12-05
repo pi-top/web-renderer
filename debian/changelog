@@ -1,3 +1,9 @@
+web-renderer (5.0.0-2) bullseye; urgency=medium
+
+  * Add 64 bit builds (#48)
+
+ -- pi-top <deb-maintainers@pi-top.com>  Tue, 29 Nov 2022 21:48:22 +0000
+
 web-renderer (5.0.0-1) bullseye; urgency=medium
 
   * Make web-renderer backend-agnostic (#39)
