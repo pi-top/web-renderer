@@ -55,7 +55,7 @@ jobs:
           submodules: true
 
       - id: version
-        uses: docker://lpenz/ghaction-version-gen:0.3
+        uses: docker://lpenz/ghaction-version-gen:0.11.0
 
       - name: Add changelog entry for latest snapshot version
         uses: pi-top/git-debian-changelog-bump-action@master
@@ -80,6 +80,8 @@ jobs:
           additional_env: |
             DATA="${{ secrets.DATA }}"
             TLS_KEY="${{ secrets.TLS_KEY }}"
+            PYTHON_PACKAGE_VERSION="${{ steps.version.outputs.tag_latest_ltrimv }}"
+
 
       - name: Generate artifact name
         run: |
