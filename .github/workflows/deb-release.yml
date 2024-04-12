@@ -150,7 +150,7 @@ jobs:
       - name: Zip distro artifacts
         run: |
           ls -l ./artifacts
-          zip ${{ matrix.distro }}-${{ matrix.architecture }}.deb.zip ./artifacts/*.deb
+          zip ${{ matrix.distro }}-${{ matrix.architecture }}.deb.zip ./artifacts/*
 
       - name: Create release and upload package
         uses: svenstaro/upload-release-action@v2
