@@ -1,3 +1,12 @@
+web-renderer (5.0.1-1) bullseye; urgency=medium
+
+  * Updated master workflow files
+  * Updated master workflow files
+  * Updated master workflow files
+  * Package for bookworm (#51)
+
+ -- pi-top <deb-maintainers@pi-top.com>  Fri, 12 Apr 2024 19:27:09 +0000
+
 web-renderer (5.0.0-2) bullseye; urgency=medium
 
   * Add 64 bit builds (#48)
