@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
   parser.addOption(kioskModeOption);
   QCommandLineOption sizeOption(QStringList() << "s" << "size", "Window size relative to screen, expressed as '<width_scalar>x<height_scalar>' (e.g. '0.6x0.4'), where each scalar is a decimal number from 0 to 1.", "size", "0.65x0.55");
   parser.addOption(sizeOption);
-  QCommandLineOption titleOption(QStringList() << "t" << "window-title", "Specify a title for the window. This will appear in the title bar.", "title", "web-renderer");
+  QCommandLineOption titleOption(QStringList() << "t" << "window-title", "Specify a title for the window. This will appear in the title bar.", "title", "");
   parser.addOption(titleOption);
   QCommandLineOption iconOption(QStringList() << "i" << "icon", "Specify the path to an icon to be set as the application icon. This will appear in the title bar (unless the '--hide-frame' option is selected), and in the application bar.", "path", "");
   parser.addOption(iconOption);
@@ -135,8 +135,10 @@ int main(int argc, char *argv[])
   ////////
   qInfo() << "Configuring view";
 
-  app.setApplicationName(titleArg);
-  rootObject->setProperty("title", titleArg);
+  if (titleArg != "") {
+    app.setApplicationName(titleArg);
+    rootObject->setProperty("title", titleArg);
+  }
 
   const QSize &screenSize = app.primaryScreen()->size();
   if (kioskModeArg)

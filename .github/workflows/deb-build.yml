@@ -128,6 +128,7 @@ jobs:
             ./artifacts/*.dsc
         env:
           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+        if: github.ref == 'refs/heads/master'
 
       - name: Upload .deb to PackageCloud
         uses: pi-top/ghaction-packagecloud@main
@@ -138,3 +139,4 @@ jobs:
             ./artifacts/*.deb
         env:
           PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+        if: github.ref == 'refs/heads/master'
