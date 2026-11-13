@@ -1,3 +1,13 @@
+web-renderer (5.0.2-1) bookworm; urgency=medium
+
+  * Debian workflows: drop bullseye, move off the dead runner
+  * Create releases with the workflow's own token
+  * Remove the Dependabot config
+  * Only check the release version when releasing
+  * Allow running the changelog bump by hand
+
+ -- pi-top <deb-maintainers@pi-top.com>  Fri, 13 Nov 2026 14:16:07 +0000
+
 web-renderer (5.0.1-1) bullseye; urgency=medium
 
   * Updated master workflow files
